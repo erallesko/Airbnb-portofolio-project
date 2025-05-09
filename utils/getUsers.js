@@ -1,17 +1,21 @@
 function getUsers(objects){
 
-    const arrays = objects.map((object) => {
+    const copyObjects = structuredClone(objects);
+
+    const arrays = copyObjects.map((object) => {
 
         const element = [];
         let host = false;
 
         for (let key in object){
 
-            if (key === "is_host"){
+            if (key === "role"){
                 if (object[key] === "host"){
+                    key = "is_host"
                     host = true
                     element.push(host)
                 }else {
+                    key = "is_host"
                     element.push(host)
                  };
             }else {
