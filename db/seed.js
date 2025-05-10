@@ -8,6 +8,7 @@ const getImages = require("../utils/getImages");
 
 async function seed (propertyTypesData, usersData, propertiesData, reviewsData, imagesData){
 
+    await db.query(`DROP TABLE favourites;`)
     await db.query(`DROP TABLE images;`)
     await db.query(`DROP TABLE reviews;`)
     await db.query(`DROP TABLE properties;`)
@@ -55,6 +56,11 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
                     alt_text VARCHAR NOT NULL
                     );`);
 
+    await db.query(`CREATE TABLE favourites(
+                    guest_id INTEGER NOT NULL REFERENCES users(user_id),
+                    property_id INTEGER NOT NULL REFERENCES properties(property_id)
+                    );`)
+
     await db.query(format(`INSERT INTO property_types (property_type, description) VALUES %L`, getPropertyTypes(propertyTypesData)));
 
 
@@ -72,7 +78,7 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
    
     await db.query(format(`INSERT INTO images (property_id, image_url, alt_text) VALUES %L`, getImages(imagesData, propertiesTableData)));
     
-    console.log("done");
+    console.log(propertiesTableData);
 };
 
 module.exports = seed;
