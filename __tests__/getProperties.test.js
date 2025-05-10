@@ -4,36 +4,14 @@ describe("get properties", () => {
     test("returns an array", () => {
 
         const objects = [{name: "pizza"}];
-
-        const userData = [{
-            user_id: 6,
-            first_name: 'Rachel',
-            surname: 'Cummings',
-            email: 'rachel@example.com',
-            phone_number: '+44 7000 666666',
-            is_host: false,
-            avatar: 'https://example.com/images/rachel.jpg',
-            created_at: null
-          }]
-
-    expect(Array.isArray(getProperties(objects, userData))).toBe(true);
+   
+    expect(Array.isArray(getProperties(objects))).toBe(true);
     });
     test("returns value of one object in an array", () => {
 
         const objects = [{food: "pizza"}];
 
-        const userData = [{
-            user_id: 6,
-            first_name: 'Rachel',
-            surname: 'Cummings',
-            email: 'rachel@example.com',
-            phone_number: '+44 7000 666666',
-            is_host: false,
-            avatar: 'https://example.com/images/rachel.jpg',
-            created_at: null
-          }]
-
-    expect(getProperties(objects, userData)).toEqual([["pizza"]]);
+    expect(getProperties(objects)).toEqual([["pizza"]]);
     });
     test("returns multiple values of one object in an array", () => {
 
@@ -41,18 +19,7 @@ describe("get properties", () => {
                         meal : "lunch"
         }];
 
-        const userData = [{
-            user_id: 6,
-            first_name: 'Rachel',
-            surname: 'Cummings',
-            email: 'rachel@example.com',
-            phone_number: '+44 7000 666666',
-            is_host: false,
-            avatar: 'https://example.com/images/rachel.jpg',
-            created_at: null
-          }]
-
-    expect(getProperties(objects, userData)).toEqual([["pizza", "lunch"]]);
+    expect(getProperties(objects)).toEqual([["pizza", "lunch"]]);
     });
     test("returns  values of multiple objects in an array", () => {
 
@@ -62,18 +29,7 @@ describe("get properties", () => {
                         day: "monday"
                         }];
 
-        const userData = [{
-            user_id: 6,
-            first_name: 'Rachel',
-            surname: 'Cummings',
-            email: 'rachel@example.com',
-            phone_number: '+44 7000 666666',
-            is_host: false,
-            avatar: 'https://example.com/images/rachel.jpg',
-            created_at: null
-          }]
-
-    expect(getProperties(objects, userData)).toEqual([["pizza", "lunch"], [12, "monday"]]);
+    expect(getProperties(objects)).toEqual([["pizza", "lunch"], [12, "monday"]]);
     });
     test("does not return amenities key", () => {
 
@@ -82,19 +38,8 @@ describe("get properties", () => {
                         {number : 12,
                             amenities: "[Wi-fi]"
                         }];
-        
-        const userData = [{
-            user_id: 6,
-            first_name: 'Rachel',
-            surname: 'Cummings',
-            email: 'rachel@example.com',
-            phone_number: '+44 7000 666666',
-            is_host: false,
-            avatar: 'https://example.com/images/rachel.jpg',
-            created_at: null
-          }]
-
-    expect(getProperties(objects, userData)).toEqual([["pizza", "lunch"], [12]]);
+  
+    expect(getProperties(objects)).toEqual([["pizza", "lunch"], [12]]);
     });
     test("replaces host_id for host name", () => {
 
