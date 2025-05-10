@@ -5,28 +5,7 @@ describe("get reviews", () => {
 
         const objects = [{food : "pizza"}];
 
-        const propertyData = [{
-            property_id: 11,
-            host_id: 1,
-            name: 'Bright and Airy Studio',
-            location: 'Cambridge, UK',
-            property_type: 'Studio',
-            price_per_night: '100',
-            description: 'Description of Bright and Airy Studio.'
-          }];
-
-          const userData = [{
-            user_id: 4,
-            first_name: 'Frank',
-            surname: 'White',
-            email: 'frank@example.com',
-            phone_number: '+44 7000 444444',
-            is_host: false,
-            avatar: 'https://example.com/images/frank.jpg',
-            created_at: null
-          }]
-
-    expect(Array.isArray(getReviews(objects, propertyData, userData))).toBe(true);
+    expect(Array.isArray(getReviews(objects))).toBe(true);
     });
     test("returns the value of one object in an array", () => {
 
@@ -41,28 +20,7 @@ describe("get reviews", () => {
                           meal : "lunch"
                                         }];
 
-        const propertyData = [{
-            property_id: 11,
-            host_id: 1,
-            name: 'Bright and Airy Studio',
-            location: 'Cambridge, UK',
-            property_type: 'Studio',
-            price_per_night: '100',
-            description: 'Description of Bright and Airy Studio.'
-          }];                            
-
-          const userData = [{
-            user_id: 4,
-            first_name: 'Frank',
-            surname: 'White',
-            email: 'frank@example.com',
-            phone_number: '+44 7000 444444',
-            is_host: false,
-            avatar: 'https://example.com/images/frank.jpg',
-            created_at: null
-          }]
-
-    expect(getReviews(objects, propertyData, userData)).toEqual([["pizza", "lunch"]]);
+    expect(getReviews(objects)).toEqual([["pizza", "lunch"]]);
     });
     test("returns  values of multiple objects in an array", () => {
 
@@ -73,28 +31,7 @@ describe("get reviews", () => {
                         day: "monday"
                         }];
 
-        const propertyData = [{
-            property_id: 11,
-            host_id: 1,
-            name: 'Bright and Airy Studio',
-            location: 'Cambridge, UK',
-            property_type: 'Studio',
-            price_per_night: '100',
-            description: 'Description of Bright and Airy Studio.'
-          }];
-
-          const userData = [{
-            user_id: 4,
-            first_name: 'Frank',
-            surname: 'White',
-            email: 'frank@example.com',
-            phone_number: '+44 7000 444444',
-            is_host: false,
-            avatar: 'https://example.com/images/frank.jpg',
-            created_at: null
-          }]
-    
-    expect(getReviews(objects, propertyData, userData)).toEqual([["pizza", "lunch"], [12, "monday"]]);
+    expect(getReviews(objects)).toEqual([["pizza", "lunch"], [12, "monday"]]);
     });
     test("replaces property name with property id", () => {
 
@@ -115,18 +52,7 @@ describe("get reviews", () => {
             description: 'Description of Bright and Airy Studio.'
           }];
 
-          const userData = [{
-            user_id: 4,
-            first_name: 'Frank',
-            surname: 'White',
-            email: 'frank@example.com',
-            phone_number: '+44 7000 444444',
-            is_host: false,
-            avatar: 'https://example.com/images/frank.jpg',
-            created_at: null
-          }]
-
-    expect(getReviews(objects, propertyData, userData)).toEqual([[11, "lunch"], [12, "monday"]])
+    expect(getReviews(objects, propertyData)).toEqual([[11, "lunch"], [12, "monday"]])
     });
     test ("replaces guest name with guest id", () => {
 
