@@ -1,13 +1,14 @@
 const db = require("./connection");
 const format = require("pg-format");
-const getArrays = require("../utils/getArrays")
 const getUsers = require("../utils/getUsers");
 const getProperties = require("../utils/getProperties");
 const getReviews = require("../utils/getReviews");
+const getPropertyTypes = require("../utils/getPropertyTypes");
+const getImages = require("../utils/getImages");
 
-async function seed (propertyTypesData, usersData, propertiesData, reviewsData){
+async function seed (propertyTypesData, usersData, propertiesData, reviewsData, imagesData){
 
-
+    await db.query(`DROP TABLE images;`)
     await db.query(`DROP TABLE reviews;`)
     await db.query(`DROP TABLE properties;`)
     await db.query(`DROP TABLE users;`)
@@ -45,9 +46,16 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData){
                     rating INTEGER NOT NULL,
                     comment TEXT,
                     created_at TIMESTAMP
-        );`)
+        );`);
 
-    await db.query(format(`INSERT INTO property_types (property_type, description) VALUES %L`, getArrays(propertyTypesData)));
+    await db.query(`CREATE TABLE images (
+                    image_id SERIAL PRIMARY KEY,
+                    property_id INTEGER NOT NULL REFERENCES properties(property_id),
+                    image_url VARCHAR NOT NULL,
+                    alt_text VARCHAR NOT NULL
+                    );`);
+
+    await db.query(format(`INSERT INTO property_types (property_type, description) VALUES %L`, getPropertyTypes(propertyTypesData)));
 
 
     await db.query(format(`INSERT INTO users (first_name, surname, email, phone_number, is_host, avatar) VALUES %L`, getUsers(usersData)));
@@ -62,6 +70,8 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData){
 
     await db.query(format(`INSERT INTO reviews (property_id, guest_id, rating, comment) VALUES %L`, getReviews(reviewsData, propertiesTableData, userTableData)));
    
+    await db.query(format(`INSERT INTO images (property_id, image_url, alt_text) VALUES %L`, getImages(imagesData, propertiesTableData)));
+    
     console.log("done");
 };
 
