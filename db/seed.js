@@ -3,8 +3,9 @@ const format = require("pg-format");
 const getArrays = require("../utils/getArrays")
 const getUsers = require("../utils/getUsers");
 const getProperties = require("../utils/getProperties");
+const getReviews = require("../utils/getReviews");
 
-async function seed (propertyTypesData, usersData, propertiesData){
+async function seed (propertyTypesData, usersData, propertiesData, reviewsData){
 
 
     await db.query(`DROP TABLE reviews;`)
@@ -52,11 +53,15 @@ async function seed (propertyTypesData, usersData, propertiesData){
     await db.query(format(`INSERT INTO users (first_name, surname, email, phone_number, is_host, avatar) VALUES %L`, getUsers(usersData)));
 
    const users = await db.query(`SELECT * FROM users;`)
-   const userTableData = users.rows
+   const userTableData = users.rows;
 
-   
     await db.query(format(`INSERT INTO properties (host_id, name, location, property_type, price_per_night, description) VALUES %L`, getProperties(propertiesData, userTableData )));
 
+    const properties = await db.query(`SELECT * FROM properties;`)
+    const propertiesTableData = properties.rows;
+
+    await db.query(format(`INSERT INTO reviews (property_id, guest_id, rating, comment) VALUES %L`, getReviews(reviewsData, propertiesTableData, userTableData)));
+   
     console.log("done");
 };
 

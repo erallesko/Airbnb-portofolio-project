@@ -58,8 +58,8 @@ describe("get properties", () => {
 
         const objects = [{food: "pizza",
                         meal : "lunch"},
-                        {number : 12,
-                            day: "monday"
+                       {number : 12,
+                        day: "monday"
                         }];
 
         const userData = [{

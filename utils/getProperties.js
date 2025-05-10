@@ -12,7 +12,6 @@ function getProperties (objects, userData){
                 case "host_name":
                     userData.forEach(user => {
                         if (`${user.first_name} ${user.surname}` === object[key]){
-                            key = "user_id"
                             element[0] = user.user_id;
                         }
                     });
