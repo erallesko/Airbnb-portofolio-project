@@ -3,7 +3,7 @@ const getProperties = require("../utils/getProperties");
 describe("get properties", () => {
     test("returns an array", () => {
 
-        const objects = [{food: "pizza"}];
+        const objects = [{name: "pizza"}];
 
         const userData = [{
             user_id: 6,
@@ -99,7 +99,7 @@ describe("get properties", () => {
     test("replaces host_id for host name", () => {
 
         const objects = [{host_name: "Rachel Cummings",
-                          meal : "lunch"},
+                          name : "lunch"},
                         { number : 12,
                           amenities: "[Wi-fi]"
                         }];

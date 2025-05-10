@@ -1,9 +1,10 @@
 const db = require("./connection");
 const format = require("pg-format");
 const getArrays = require("../utils/getArrays")
-const getUsers = require("../utils/getUsers")
+const getUsers = require("../utils/getUsers");
+const getProperties = require("../utils/getProperties");
 
-async function seed (propertyTypesData, usersData){
+async function seed (propertyTypesData, usersData, propertiesData){
 
 
     await db.query(`DROP TABLE reviews;`)
@@ -50,11 +51,13 @@ async function seed (propertyTypesData, usersData){
 
     await db.query(format(`INSERT INTO users (first_name, surname, email, phone_number, is_host, avatar) VALUES %L`, getUsers(usersData)));
 
-   const data = await db.query(`SELECT * FROM users;`)
+   const users = await db.query(`SELECT * FROM users;`)
+   const userTableData = users.rows
 
-        console.log(data.rows)
    
-    // await db.query(format(`INSERT INTO properties (host_id, name, location, property_type, price_per_night, description)`))
+    await db.query(format(`INSERT INTO properties (host_id, name, location, property_type, price_per_night, description) VALUES %L`, getProperties(propertiesData, userTableData )));
+
+    console.log("done");
 };
 
 module.exports = seed;
