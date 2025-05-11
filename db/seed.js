@@ -73,6 +73,9 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
                     check_out_date DATE NOT NULL,
                     created_at TIMESTAMP
                     );`)
+            
+    await db.query(`CREATE TABLE amenities(
+                    amenities VARCHAR PRIMARY KEY);`)
 
     await db.query(format(`INSERT INTO property_types (property_type, description) VALUES %L`, getPropertyTypes(propertyTypesData)));
 
