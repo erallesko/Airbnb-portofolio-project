@@ -10,13 +10,15 @@ const getBookings = require("../utils/getBookings");
 
 async function seed (propertyTypesData, usersData, propertiesData, reviewsData, imagesData, favouritesData, bookingsData){
 
-    await db.query(`DROP TABLE bookings;`)
-    await db.query(`DROP TABLE favourites;`)
-    await db.query(`DROP TABLE images;`)
-    await db.query(`DROP TABLE reviews;`)
-    await db.query(`DROP TABLE properties;`)
-    await db.query(`DROP TABLE users;`)
-    await db.query(`DROP TABLE property_types;`)
+    await db.query(`DROP TABLE properties_amenities;`);
+    await db.query(`DROP TABLE amenities;`);
+    await db.query(`DROP TABLE bookings;`);
+    await db.query(`DROP TABLE favourites;`);
+    await db.query(`DROP TABLE images;`);
+    await db.query(`DROP TABLE reviews;`);
+    await db.query(`DROP TABLE properties;`);
+    await db.query(`DROP TABLE users;`);
+    await db.query(`DROP TABLE property_types;`);
 
    await db.query(`CREATE TABLE property_types (
                     property_type VARCHAR NOT NULL PRIMARY KEY,
@@ -75,7 +77,12 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
                     );`)
             
     await db.query(`CREATE TABLE amenities(
-                    amenities VARCHAR PRIMARY KEY);`)
+                    amenities VARCHAR PRIMARY KEY);`);
+
+    await db.query(`CREATE TABLE properties_amenities (
+                    property_amenities SERIAL PRIMARY KEY,
+                    property_id INTEGER NOT NULL REFERENCES properties(property_id),
+                    amenity_slag VARCHAR NOT NULL REFERENCES amenities(amenities));`);
 
     await db.query(format(`INSERT INTO property_types (property_type, description) VALUES %L`, getPropertyTypes(propertyTypesData)));
 
@@ -98,7 +105,7 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
 
     await db.query(format(`INSERT INTO bookings (property_id, guest_id, check_in_date, check_out_date) VALUES %L`, getBookings(bookingsData, userTableData, propertiesTableData)));
    
-    console.log("done");
+    console.log(userTableData);
 };
 
 module.exports = seed;
