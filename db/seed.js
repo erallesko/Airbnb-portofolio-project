@@ -92,7 +92,7 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
     
     await db.query(format(`INSERT INTO favourites (guest_id, property_id) VALUES %L`, getFavourites(favouritesData, userTableData, propertiesTableData)));
 
-    console.log("done");
+    console.log(propertiesTableData);
 };
 
 module.exports = seed;
