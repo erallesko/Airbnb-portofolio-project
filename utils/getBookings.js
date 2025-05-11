@@ -26,6 +26,8 @@ function getBookings (objects, usersData, propertiesData) {
 
                 }
             }
+
+            element.push(new Date());
             return element;
         });
 

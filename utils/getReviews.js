@@ -31,7 +31,8 @@ function getReviews (objects, propertyData, userData){
                     element.push(object[key])
             };
         }
-
+        
+        element.push(new Date());
         return element;
     });
 

@@ -19,6 +19,7 @@ function getUsers(objects){
             }
         };
 
+        element.push(new Date());
         return element;
     })
     
