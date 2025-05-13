@@ -46,8 +46,19 @@ and then require the dotenv file into our connection with :
 
 require("dotenv").config();
 
+# Creating seed function
 
+We will create a seed function which will allow us to test the functionality of the database by running it as many times as we want  without updating it. In order to do that
+there are several steps we need to take. First we need  to require the database from our connection file and pool request which we have exported. We will name it "db" instead of pool
 
+const db = require("./connection");
+
+We will create a "seed" function which is asynchronous in nature. We can use the async-wait syntax to do that 
+
+async function seed () {};
+module.exports = seed;
+
+We are exporting the function and running it on a different file in order to keep our syntax cleaner.
 
 
 
