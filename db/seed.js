@@ -17,8 +17,8 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
     await db.query(`DROP TABLE images;`);
     await db.query(`DROP TABLE reviews;`);
     await db.query(`DROP TABLE properties;`);
-    await db.query(`DROP TABLE users;`);
     await db.query(`DROP TABLE property_types;`);
+    await db.query(`DROP TABLE users;`);
 
    await db.query(`CREATE TABLE property_types (
                     property_type VARCHAR NOT NULL PRIMARY KEY,
@@ -32,7 +32,7 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
                     phone_number VARCHAR,
                     is_host BOOLEAN NOT NULL,
                     avatar VARCHAR,
-                    created_at TIMESTAMP
+                    created_at TIMESTAMP DEFAULT NOW()
         );`)
 
     await db.query(`CREATE TABLE properties (
@@ -51,7 +51,7 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
                     guest_id INTEGER NOT NULL REFERENCES users(user_id),
                     rating INTEGER NOT NULL,
                     comment TEXT,
-                    created_at TIMESTAMP
+                    created_at TIMESTAMP DEFAULT NOW()
         );`);
 
     await db.query(`CREATE TABLE images (
@@ -73,7 +73,7 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
                     guest_id INTEGER NOT NULL REFERENCES users(user_id),
                     check_in_date DATE NOT NULL, 
                     check_out_date DATE NOT NULL,
-                    created_at TIMESTAMP
+                    created_at TIMESTAMP DEFAULT NOW()
                     );`)
             
     await db.query(`CREATE TABLE amenities(
@@ -83,6 +83,10 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
                     property_amenities SERIAL PRIMARY KEY,
                     property_id INTEGER NOT NULL REFERENCES properties(property_id),
                     amenity_slag VARCHAR NOT NULL REFERENCES amenities(amenities));`);
+
+
+
+
 
     await db.query(format(`INSERT INTO property_types (property_type, description) VALUES %L`, getPropertyTypes(propertyTypesData)));
 
@@ -97,6 +101,8 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
     const properties = await db.query(`SELECT * FROM properties;`)
     const propertiesTableData = properties.rows;
 
+
+    
     await db.query(format(`INSERT INTO reviews (property_id, guest_id, rating, comment) VALUES %L`, getReviews(reviewsData, propertiesTableData, userTableData)));
    
     await db.query(format(`INSERT INTO images (property_id, image_url, alt_text) VALUES %L`, getImages(imagesData, propertiesTableData)));
@@ -105,7 +111,6 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
 
     await db.query(format(`INSERT INTO bookings (property_id, guest_id, check_in_date, check_out_date) VALUES %L`, getBookings(bookingsData, userTableData, propertiesTableData)));
    
-    console.log(userTableData);
 };
 
 module.exports = seed;

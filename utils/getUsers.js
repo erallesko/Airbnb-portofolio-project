@@ -1,31 +1,18 @@
-function getUsers(objects){
+function getUsers(users){
 
-    const arrays = objects.map((object) => {
+    const usersData = users.map((user) => {
 
-        const element = [];
         let host = false;
 
-        for (let key in object){
+        if (user.role === "host"){
+            host = true;
+        }
 
-            if (key === "role"){
-                if (object[key] === "host"){
-                    host = true
-                    element.push(host)
-                }else {
-                    element.push(host)
-                 };
-            }else {
-                element.push(object[key])
-            }
-        };
-
-        element.push(new Date());
-        return element;
+        return [user.first_name, user.surname, user.email, user.phone_number, host, user.avatar];  
+       
     })
     
-
-
-    return arrays;
+    return usersData;
 }
 
 module.exports = getUsers;

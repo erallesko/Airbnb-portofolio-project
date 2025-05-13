@@ -1,17 +1,12 @@
-function getPropertyTypes(objects){
+function getPropertyTypes(propertyTypes){
 
-const arrays = objects.map((object) => {
-    const element = []
-
-    for (let key in object){
-        element.push(object[key])
-    }
-
-    return element;
+const propertyTypeData = propertyTypes.map((propertyType) => {
+   
+    return [propertyType.property_type, propertyType.description];
 
 })
 
-return arrays;
+return propertyTypeData;
 }
 
 module.exports = getPropertyTypes;

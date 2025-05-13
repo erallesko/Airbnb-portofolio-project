@@ -1,46 +1,21 @@
-function getProperties (objects, userData){
+function getProperties (properties, userData){
 
-    const objectsClone = structuredClone(objects)
+    let host_id = 0;
 
-    const arrays = objectsClone.map((object)=>{
+    const propertiesData = properties.map((property)=>{
 
-        const element = [];
+        userData.forEach((user) => {
 
-        for (let key in object){
-
-            switch (key){
-                case "host_name":
-                    userData.forEach(user => {
-                        if (`${user.first_name} ${user.surname}` === object[key]){
-                            element[0] = user.user_id;
-                        }
-                    });
-                    break;
-                case "amenities":
-                    delete object[key]
-                    break;
-                case "name":
-                    element[1] = object[key];
-                    break;
-                case "location":
-                    element[2] = object[key];
-                    break;
-                case "property_type":
-                    element[3] = object[key]
-                    break;
-                case "price_per_night":
-                    element[4] = object[key]
-                    break;
-                default:
-                    element.push(object[key])
-                    break;
+            if(`${user.first_name} ${user.surname}` === property.host_name){
+                 host_id = user.user_id;
             }
-        };
+        });
 
-        return element;
+        return [host_id, property.name, property.location, property.property_type, property.price_per_night, property.description];
+
     });
 
-    return arrays;
+    return propertiesData;
 };
 
 module.exports = getProperties;

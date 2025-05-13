@@ -32,7 +32,6 @@ function getReviews (objects, propertyData, userData){
             };
         }
         
-        element.push(new Date());
         return element;
     });
 
