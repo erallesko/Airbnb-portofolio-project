@@ -1,29 +1,21 @@
-function getImages (objects, propertyData){
+function getImages (images, properties){
 
-    const arrays = objects.map((object)=>{
+    const imagesData = images.map((image)=>{
 
-        const element = []
+        property_id = 0;
 
-        for (let key in object){
-
-            switch (key){
-                case "property_name":
-                    propertyData.forEach(property => {
-                        if (object[key] === property.name){
-                            element.push(property.property_id)
-                        }
-                    })
-                    break;
-                default:
-                    element.push(object[key])
+        properties.forEach(property => {
+            
+            if (image.property_name === property.name){
+                property_id = property.property_id;
             }
+        });
 
-          }
+        return [property_id, image.image_url, image.alt_tag];
 
-        return element;
     });
 
-    return arrays;
+    return imagesData;
 };
 
 module.exports = getImages;

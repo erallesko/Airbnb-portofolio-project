@@ -1,36 +1,27 @@
-function getBookings (objects, usersData, propertiesData) {
+function getBookings (bookings, users, properties) {
 
-    const arrays = objects.map((object)=>{
+    const bookingsData = bookings.map((booking)=>{
 
-        const element = [];
+        let property_id = 0;
+        let user_id = 0;
 
-            for (let key in object){
-
-                switch (key) {
-                    case "guest_name":
-                        usersData.forEach(user => {
-                            if (object[key] === `${user.first_name} ${user.surname}`){
-                                element.push(user.user_id)
-                            }
-                        })
-                        break;
-                    case "property_name":
-                        propertiesData.forEach((property)=>{
-                            if (object[key] === property.name){
-                                element.push(property.property_id)
-                            }
-                        })
-                        break;
-                    default :
-                        element.push(object[key])
-
-                }
+        users.forEach(user => {
+            if (booking.guest_name === `${user.first_name} ${user.surname}`){
+                user_id = user.user_id;
             }
-
-            return element;
         });
 
-   return arrays;
+        properties.forEach(property => {
+            if (booking.property_name === property.name){
+                property_id = property.property_id;
+            }
+        });
+
+        return [property_id, user_id, booking.check_in_date, booking.check_out_date];
+
+        });
+
+   return bookingsData;
 }
 
 module.exports = getBookings;

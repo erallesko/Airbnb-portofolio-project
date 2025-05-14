@@ -1,37 +1,27 @@
-function getFavourites (objects, usersData, propertiesData){
+function getFavourites (favourites, users, properties){
 
-    const arrays = objects.map((object)=>{
+    const favouritesData = favourites.map((favourite)=>{
 
-        const element = []
+        let user_id = 0;
+        let property_id = 0;
 
-        for (let key in object){
-
-            switch (key){
-                case "guest_name":
-
-                    usersData.forEach(user => {
-                        if (object[key] === `${user.first_name} ${user.surname}`){
-                            element.push(user.user_id)
-                        }
-                    })
-                    break;
-                case "property_name":
-
-                    propertiesData.forEach((property)=>{
-                        if (object[key] === property.name){
-                            element.push(property.property_id)
-                        }
-                    })
-                    break;
-                default:
-                    element.push(object[key])
+        users.forEach(user => {
+            if (favourite.guest_name === `${user.first_name} ${user.surname}`){
+                user_id = user.user_id;
             }
-        }
+        });
 
-        return element;
+        properties.forEach(property => {
+            if (favourite.property_name === property.name){
+                property_id = property.property_id;
+            }
+        });
+
+        return [user_id, property_id]
+     
     });
 
-    return arrays;
+    return favouritesData;
 }
 
 module.exports = getFavourites;

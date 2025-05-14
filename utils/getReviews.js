@@ -1,41 +1,28 @@
-function getReviews (objects, propertyData, userData){
+function getReviews (reviews, propertyData, userData){
 
-    const arrays = objects.map((object)=>{
 
-        element = []
+    const reviewsData = reviews.map((review)=>{
 
-        for (let key in object){
+    let property_id = 0; 
+    let guest_id = 0;;
 
-            switch (key){
-                case ("property_name"):
-                    propertyData.forEach(property => {
-                        if (object[key] === property.name){
-                            element[0] = property.property_id
-                        }
-                    });
-                    break;
-                case ("guest_name") :
-                    userData.forEach((user)=>{
-                        if (object[key] === `${user.first_name} ${user.surname}`){
-                            element[1] = user.user_id
-                        }
-                    });
-                    break;
-                case ("rating"):
-                    element[2] = object[key]
-                    break;
-                case ("comment"):
-                    element[3] = object[key]
-                    break;
-                default:
-                    element.push(object[key])
+
+        propertyData.forEach((property) => {
+            if (review.property_name === property.name){
+                property_id = property.property_id
             };
-        }
-        
-        return element;
-    });
+        })
 
-    return arrays;
+        userData.forEach((user) => {
+            if (review.guest_name === `${user.first_name} ${user.surname}`){
+                guest_id = user.user_id
+            };
+        })
+
+        return [property_id, guest_id, review.rating, review.comment];
+        });
+
+    return reviewsData;
 }
 
 module.exports = getReviews;
