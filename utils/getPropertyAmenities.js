@@ -1,21 +1,27 @@
 function getPropertyAmenities(propertiesData, propertiesTable){
 
 
-    const propertyAmenities = propertiesData.map (property => {
+    const propertyAmenities = propertiesData.map ((property) =>{
 
-        property_id = 0;
+        let property_id = 0
 
-        propertiesTable.forEach(propertyTable => {
-            if (property.name === propertyTable.name){
-                property_id = propertyTable.property_id
+        propertiesTable.forEach(row => {
+            if (property.name === row.name){
+                property_id = row.property_id;
             }
         });
+            
+        const amenities = property.amenities.map((amenity)=>{
+        return [property_id, amenity]
+        })
 
-        
-        return [property_id, JSON.stringify(property.amenities)]
+
+        return amenities;
+
     })
+    
+    return propertyAmenities.flat();
 
-    return propertyAmenities;
 }
 
 module.exports = getPropertyAmenities;

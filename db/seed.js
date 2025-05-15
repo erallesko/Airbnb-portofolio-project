@@ -9,7 +9,7 @@ const getImages = require("../utils/getImages");
 const getFavourites = require("../utils/getFavourites");
 const getBookings = require("../utils/getBookings");
 const getAmenities = require("../utils/getAmenities");
-// const getPropertyAmenities = require("../utils/getPropertyAmenities")
+const getPropertyAmenities = require("../utils/getPropertyAmenities");
 
 async function seed (propertyTypesData, usersData, propertiesData, reviewsData, imagesData, favouritesData, bookingsData){
 
@@ -104,7 +104,7 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
    
     await db.query(format(`INSERT INTO amenities (amenities) VALUES %L`, getAmenities(propertiesData)));
 
-    // await db.query(format(`INSERT INTO properties_amenities (property_id, amenity_slag) VALUES %L`, getPropertyAmenities(propertiesData, properties)));
+    await db.query(format(`INSERT INTO properties_amenities (property_id, amenity_slag) VALUES %L`, getPropertyAmenities(propertiesData, properties)));
 
 };
 
