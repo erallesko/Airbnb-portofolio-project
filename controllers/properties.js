@@ -7,4 +7,9 @@ exports.getProperties = async (req, res, next) => {
 
  properties = {properties : rows}
     res.status(200).send(properties);
-}
+};
+
+exports.getProperty = async (req, res, next) => {
+
+    res.status(200).send();
+};
