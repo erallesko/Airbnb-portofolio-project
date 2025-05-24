@@ -57,7 +57,7 @@ async function seed (propertyTypesData, usersData, propertiesData, reviewsData, 
                     );`);
 
     await db.query(`CREATE TABLE favourites(
-                    facourite_id SERIAL PRIMARY KEY,
+                    favourite_id SERIAL PRIMARY KEY,
                     guest_id INTEGER NOT NULL REFERENCES users(user_id),
                     property_id INTEGER NOT NULL REFERENCES properties(property_id)
                     );`)

@@ -172,6 +172,207 @@ describe ("app", () => {
 
             await  request(app).get("/api/properties/:id").expect(200);
           });
-    })
+        test( "returns an array 1 element ", async () => {
 
+          const id = 3
+
+          const {body} =  await  request(app).get(`/api/properties/${id}`);
+
+            expect(Array.isArray(body.property)).toBe(true);
+
+            expect(body.property.length === 1).toBe(true);
+        });
+        test( "returns a property with the property id passed in the parametric endpoint", async () => {
+
+            const id = 3;
+            
+            const query = `/api/properties/${id}`;
+
+            const {body} = await request(app).get(query);
+
+            const propertyID = body.property[0].property_id
+
+            expect(propertyID).toBe(id);
+
+        });
+        test("returns an array with one property that has a property_name value ", async () => {
+
+            const id = 3;
+
+            const {body} = await  request(app).get(`/api/properties/${id}`);
+
+            const property = body.property[0];
+
+            expect(property.hasOwnProperty("property_name")).toBe(true)
+        });
+        test("returns an array with one property that has a location value ", async () => {
+
+            const id = 3;
+
+            const {body} = await  request(app).get(`/api/properties/${id}`);
+
+            const property = body.property[0];
+
+            expect(property.hasOwnProperty("location")).toBe(true)
+        });
+        test("returns an array with one property that has a price_per_night value ", async () => {
+
+            const id = 3;
+
+            const {body} = await  request(app).get(`/api/properties/${id}`);
+
+            const property = body.property[0];
+
+            expect(property.hasOwnProperty("price_per_night")).toBe(true)
+        });
+        test("returns an array with one property that has a description value ", async () => {
+
+            const id = 3;
+
+            const {body} = await  request(app).get(`/api/properties/${id}`);
+
+            const property = body.property[0];
+
+            expect(property.hasOwnProperty("description")).toBe(true)
+        });
+        test("returns an array with one property that has a host value ", async () => {
+
+            const id = 3;
+
+            const {body} = await  request(app).get(`/api/properties/${id}`);
+
+            const property = body.property[0];
+
+            expect(property.hasOwnProperty("host")).toBe(true)
+        });
+        test("returns an array with one property that has a host_avatar value ", async () => {
+
+            const id = 3;
+
+            const {body} = await  request(app).get(`/api/properties/${id}`);
+
+            const property = body.property[0];
+
+            expect(property.hasOwnProperty("host_avatar")).toBe(true)
+        });
+        test("returns an array with one property that has a favourite_count value ", async () => {
+
+            const id = 3;
+
+            const {body} = await  request(app).get(`/api/properties/${id}`);
+
+            const property = body.property[0];
+
+            expect(property.hasOwnProperty("favourite_count")).toBe(true)
+        });
+        test("should take an optional query ?user_id=<id> that returns if the property is favourited or not by the user ", async () => {
+
+            const  id = 1
+            const userID = 3
+
+            const {body} = await  request(app).get(`/api/properties/${id}?user_id=${userID}`);
+
+            const property = body.property[0];
+
+            expect(property.hasOwnProperty("favourited")).toBe(true);
+            expect(typeof property.favourited).toBe("boolean");
+        });
+    })
+    describe ("get request at /api/users/:id", () => {
+        test("responds with Status 200", async () => {
+
+            const id = 1;
+
+            await  request(app).get(`/api/users/${id}`).expect(200);
+
+          });
+        test("returns an array with one user", async () => {
+
+            const id = 1;
+
+            const {body} =  await request(app).get(`/api/users/${id}`);
+
+            expect(Array.isArray(body.user)).toBe(true);
+
+            expect(body.user[0].length === 1);
+
+        });
+        test("returns a user with user_id value", async () => {
+
+            const id = 1;
+
+            const {body} =  await request(app).get(`/api/users/${id}`);
+
+            const user = body.user[0];
+
+            expect(user.hasOwnProperty("user_id")).toBe(true);
+
+        });
+        test("returns a user with first_name value", async () => {
+
+            const id = 1;
+
+            const {body} =  await request(app).get(`/api/users/${id}`);
+
+            const user = body.user[0];
+
+            expect(user.hasOwnProperty("first_name")).toBe(true);
+
+        });
+        test("returns a user with surname value", async () => {
+
+            const id = 1;
+
+            const {body} =  await request(app).get(`/api/users/${id}`);
+
+            const user = body.user[0];
+
+            expect(user.hasOwnProperty("surname")).toBe(true);
+
+        });
+        test("returns a user with email value", async () => {
+
+            const id = 1;
+
+            const {body} =  await request(app).get(`/api/users/${id}`);
+
+            const user = body.user[0];
+
+            expect(user.hasOwnProperty("email")).toBe(true);
+
+        });
+        test("returns a user with phone_number value", async () => {
+
+            const id = 1;
+
+            const {body} =  await request(app).get(`/api/users/${id}`);
+
+            const user = body.user[0];
+
+            expect(user.hasOwnProperty("phone_number")).toBe(true);
+
+        });
+        test("returns a user with avatar value", async () => {
+
+            const id = 1;
+
+            const {body} =  await request(app).get(`/api/users/${id}`);
+
+            const user = body.user[0];
+
+            expect(user.hasOwnProperty("avatar")).toBe(true);
+
+        });
+        test("returns a user with created_at value", async () => {
+
+            const id = 1;
+
+            const {body} =  await request(app).get(`/api/users/${id}`);
+
+            const user = body.user[0];
+
+            expect(user.hasOwnProperty("created_at")).toBe(true);
+
+        });
+    })
 })
