@@ -81,6 +81,56 @@ describe ("app", () => {
             });
         });
     });
+    describe ("extra queries for /api/properties", () => {
+        test("maximum price per night", async () => {
+
+            const maxPrice = 110;
+
+            const {body} = await  request(app).get(`/api/properties?maxprice=${maxPrice}`);
+
+            const properties = body.properties
+
+            expect(properties.length).toBe(5);
+        });
+        test("minimum price per night", async () => {
+
+            const minPrice = 110;
+
+            const {body} = await  request(app).get(`/api/properties?minprice=${minPrice}`);
+
+            const properties = body.properties
+
+            expect(properties.length).toBe(7);
+        });
+        test("sort by cost_per_night", async () => {
+
+            const sortBy = "price_per_night";
+
+            const {body} = await  request(app).get(`/api/properties?sort=${sortBy}`);
+
+            const propertyOne = body.properties[0]
+
+            expect(propertyOne.price_per_night).toBe("85");
+        });
+        test("sort by ASC / DESC", async () => {
+
+            const sortingOrder = "DESC";
+
+            const {body} = await  request(app).get(`/api/properties?order=${sortingOrder}`);
+
+            const propertyOne = body.properties[0]
+
+            expect(propertyOne.price_per_night).toBe("250");
+        });
+        test("sort by specific host_id", async () => {
+
+            const hostID = 1;
+
+            const {body} = await  request(app).get(`/api/properties?host=${hostID}`);
+
+            expect(body.properties.length).toBe(5);
+        });
+    })
     describe ("get request at /api/properties/:id/reviews", () => {
         test("responds with Status 200", async () => {
 
@@ -277,7 +327,7 @@ describe ("app", () => {
             expect(property.hasOwnProperty("favourited")).toBe(true);
             expect(typeof property.favourited).toBe("boolean");
         });
-    })
+    });
     describe ("get request at /api/users/:id", () => {
         test("responds with Status 200", async () => {
 
@@ -374,5 +424,5 @@ describe ("app", () => {
             expect(user.hasOwnProperty("created_at")).toBe(true);
 
         });
-    })
+    });
 })

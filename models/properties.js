@@ -1,16 +1,47 @@
 const db = require("../db/connection")
 
-exports.fetchProperties = async () => {
+exports.fetchProperties = async (maxprice, minprice, sort, order, host) => {
 
-const query = `SELECT property_id, name AS property_name, location, price_per_night, users.first_name ||' '|| users.surname AS host 
+let query = `SELECT properties.property_id, name AS property_name, location, price_per_night, users.first_name ||' '|| users.surname AS host 
                 FROM properties
-                JOIN users
-                ON users.user_id = properties.host_id`
+                JOIN users ON users.user_id = properties.host_id`
+                
+if(/[0-9]+/.test(host)){
+    query += ` WHERE users.user_id = ${host}`
+};   
+
+if(/[0-9]+/.test(maxprice)){
+    query += ` WHERE price_per_night <= ${maxprice}`
+};
+
+if(/[0-9]+/.test(minprice)){
+    query += ` WHERE price_per_night >= ${minprice}`
+};
+
+const allowedSorting = ["price_per_night"];
+const allowedOrder = ["ASC", "DESC"];
+
+if(sort){
+
+    if(allowedSorting.includes(sort)){
+        query += ` ORDER BY ${sort} `
+    }
+
+};
+
+if(order){
+
+    if(allowedOrder.includes(order)){
+        query += ` ORDER BY price_per_night ${order}`
+    }
+}
 
 const {rows} = await db.query(query)
   
-                return rows;
+return rows;
 };
+
+
 
 
 exports.fetchProperty = async (id, user_id) => {
