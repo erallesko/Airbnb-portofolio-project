@@ -4,7 +4,7 @@ const { fetchProperties, fetchProperty } = require("../models/properties");
 exports.getProperties = async (req, res, next) => { 
 
     const {maxprice, minprice, sort, order, host} = req.query
-console.log(host)
+
     const rows = await fetchProperties(maxprice, minprice, sort, order, host);
 
     properties = {properties : rows}

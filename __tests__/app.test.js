@@ -1,10 +1,15 @@
 const request = require("supertest");
 const app = require("../app");
 const db = require("../db/connection");
+const seed = require("../db/seed");
+const {bookingsData, favouritesData, imagesData, reviewsData, propertiesData, propertyTypesData, usersData} = require("../db/data/test/")
 
-afterAll(() => {
-    db.end();
-});
+
+afterAll(async () => {
+    await seed(propertyTypesData, usersData, propertiesData, reviewsData, imagesData, favouritesData, bookingsData).then(()=>{
+        db.end()
+    })
+})
 
 
 describe ("app", () => {
@@ -425,4 +430,33 @@ describe ("app", () => {
 
         });
     });
+    describe ("delete request at /api/properties/:id/reviews", () => {
+        test("responds with Status 204", async () => {
+
+            const id = 1;
+
+            await  request(app).delete(`/api/properties/${id}/reviews`).expect(204);
+
+          });
+        test("deletes the reviews corresponding to the parametric endpoint property",async () => {
+
+          const id = 1;
+
+          await  request(app).delete(`/api/properties/${id}/reviews`);
+
+          const {body} = await  request(app).get(`/api/properties/${id}/reviews`)
+
+            expect(body.reviews.length).toBe(0);
+        });
+        //  test("returns 'no body' after deleting the review", async () => {
+
+        //     const id = 1;
+
+        //     const {body} = await  request(app).delete(`/api/properties/${id}/reviews`);
+
+        //     expect(body.msg).toBe("no body");
+
+        //   });
+
+    })
 })

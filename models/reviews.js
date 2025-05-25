@@ -29,5 +29,20 @@ exports.fetchReviews = async (id) => {
   average = total/rows.length;
 
   return {rows, average};
+};
+
+
+
+exports.removeReview = async (id) => {
+
+
+
+  const query = (`DELETE FROM reviews 
+                  WHERE property_id = $1`)
+
+
+  const {rows} = await db.query(query, [id])
+
+  return rows;
 }
 
