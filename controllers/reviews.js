@@ -1,5 +1,5 @@
 const { response } = require("../app");
-const {fetchReviews, removeReview} = require("../models/reviews")
+const {fetchReviews, removeReview, addReview} = require("../models/reviews")
 
 
 exports.getReviews = async (req, res, next) => {
@@ -22,5 +22,20 @@ exports.deleteReview = async (req, res, next) => {
  
     const rows = await removeReview(id)
 
-    res.status(204).send({msg: "no body"});
+    
+    res.status(204).send();
+};
+
+
+exports.postReview = async (req, res, next) => {
+
+    const {id} = req.params;
+    
+    const propertyID = parseInt(id)
+    
+    const newReviewData = req.body;
+
+     await addReview(propertyID, newReviewData);
+
+    res.status(201).send();
 }

@@ -454,9 +454,48 @@ describe ("app", () => {
 
         //     const {body} = await  request(app).delete(`/api/properties/${id}/reviews`);
 
+        //     console.log(body)
+
         //     expect(body.msg).toBe("no body");
 
         //   });
 
+    });
+    describe ("post a review at /api/properties/:id/reviews", () => {
+        test("responds with Status 201", async () => {
+
+            const id = 1;
+
+            const data = {
+                guest_id: 4,
+                rating: 4,
+                comment: 'Great location'
+            }
+
+            await request(app)
+            .post(`/api/properties/${id}/reviews`)
+            .send(data)
+            .expect(201);
+
+          });
+          test("Inserts review into reviews table", async () => {
+         
+            const id = 1;
+
+            const data = {
+                guest_id: 2,
+                rating: 4,
+                comment: "Great location"
+            }
+
+           const {body} = await request(app)
+            .post(`/api/properties/${id}/reviews`)
+            .send(data)
+            .expect(201);
+
+            const {rows} = await db.query(`SELECT * FROM reviews `);
+        
+            expect(rows.length).toEqual(11)
+          });
     })
 })

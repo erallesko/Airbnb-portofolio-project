@@ -12,12 +12,11 @@ exports.fetchReviews = async (id) => {
                   `
 
   if(/[0-9]/.test(id)){
-    query += `WHERE reviews.property_id = ${id}`   
+    query += ` WHERE reviews.property_id = ${id}`   
   }
   
   const {rows} = await db.query(query)
 
-  
   
   let total = 0;
   let average = 0;
@@ -37,12 +36,29 @@ exports.removeReview = async (id) => {
 
 
 
-  const query = (`DELETE FROM reviews 
-                  WHERE property_id = $1`)
+  let query = (`DELETE FROM reviews 
+                  WHERE property_id = $1 RETURNING *`)
 
 
   const {rows} = await db.query(query, [id])
 
   return rows;
+};
+
+
+exports.addReview = async (propertyID, newReviewData) => {
+ 
+  const {guest_id, rating, comment} = newReviewData;
+  console.log(comment)
+
+  const values = [propertyID, guest_id, rating, comment];
+
+  const query = `INSERT INTO reviews (property_id, guest_id, rating, comment) VALUES ($1, $2, $3, $4) ;`
+
+   const {rows} = await db.query(query, values );
+
+
+  return rows;
 }
+
 
