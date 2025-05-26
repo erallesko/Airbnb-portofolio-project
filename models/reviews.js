@@ -49,11 +49,10 @@ exports.removeReview = async (id) => {
 exports.addReview = async (propertyID, newReviewData) => {
  
   const {guest_id, rating, comment} = newReviewData;
-  console.log(comment)
 
   const values = [propertyID, guest_id, rating, comment];
 
-  const query = `INSERT INTO reviews (property_id, guest_id, rating, comment) VALUES ($1, $2, $3, $4) ;`
+  const query = `INSERT INTO reviews (property_id, guest_id, rating, comment) VALUES ($1, $2, $3, $4) RETURNING *;`
 
    const {rows} = await db.query(query, values );
 

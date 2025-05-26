@@ -35,7 +35,8 @@ exports.postReview = async (req, res, next) => {
     
     const newReviewData = req.body;
 
-     await addReview(propertyID, newReviewData);
+    const rows = await addReview(propertyID, newReviewData);
 
-    res.status(201).send();
+    
+    res.status(201).send(rows[0]);
 }

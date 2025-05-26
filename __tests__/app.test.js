@@ -494,8 +494,33 @@ describe ("app", () => {
             .expect(201);
 
             const {rows} = await db.query(`SELECT * FROM reviews `);
-        
+
             expect(rows.length).toEqual(11)
+          });
+          test("returns an object with review_id, property_id, guest_id, rating, comment and created_at values", async () => {
+         
+            const id = 1;
+
+            const data = {
+                guest_id: 2,
+                rating: 4,
+                comment: "Great location"
+            }
+
+           const {body} = await request(app)
+            .post(`/api/properties/${id}/reviews`)
+            .send(data)
+            .expect(201);
+
+            const {rows} = await db.query(`SELECT * FROM reviews `);
+
+            expect(body.hasOwnProperty("review_id")).toEqual(true);
+            expect(body.hasOwnProperty("property_id")).toEqual(true);
+            expect(body.hasOwnProperty("guest_id")).toEqual(true);
+            expect(body.hasOwnProperty("rating")).toEqual(true);
+            expect(body.hasOwnProperty("comment")).toEqual(true);
+            expect(body.hasOwnProperty("created_at")).toEqual(true);
+
           });
     })
 })
