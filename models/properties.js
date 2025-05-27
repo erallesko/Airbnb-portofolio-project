@@ -22,7 +22,6 @@ const allowedSorting = ["price_per_night"];
 const allowedOrder = ["ASC", "DESC"];
 
 if(sort){
-
     if(allowedSorting.includes(sort)){
         query += ` ORDER BY ${sort} `
     }
@@ -30,7 +29,6 @@ if(sort){
 };
 
 if(order){
-
     if(allowedOrder.includes(order)){
         query += ` ORDER BY price_per_night ${order}`
     }
@@ -70,8 +68,6 @@ exports.fetchProperty = async (id, user_id) => {
         query += `GROUP BY properties.property_id, host, avatar`
     };
 
-
-    
 
     const {rows} = await db.query(query);
 

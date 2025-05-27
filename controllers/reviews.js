@@ -22,8 +22,7 @@ exports.deleteReview = async (req, res, next) => {
  
     const rows = await removeReview(id)
 
-    
-    res.status(204).send();
+    res.status(204).send({msg: "no body"});
 };
 
 

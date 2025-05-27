@@ -1,4 +1,5 @@
-const {fetchUser} = require("../models/users")
+const { use } = require("../app");
+const {fetchUser, updateUser} = require("../models/users")
 
 exports.getUser = async (req, res, next) =>  {
 
@@ -10,4 +11,16 @@ exports.getUser = async (req, res, next) =>  {
 
     res.status(200).send(user);
 };
+
+exports.patchUser = async (req, res, next) => {
+
+    const {id} = req.params;
+    const userId = parseInt(id)
+
+    const {first_name, surname, email, phone_number, avatar} = req.body;
+
+    const rows = await updateUser(userId, first_name, surname, email, phone_number, avatar);
+
+    res.status(200).send({user:rows[0]});
+}
 

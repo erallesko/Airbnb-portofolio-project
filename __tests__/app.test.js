@@ -85,6 +85,12 @@ describe ("app", () => {
 
             });
         });
+        test ("non existent endpoint responds with 404 and msg", async () => {
+
+            const  {body} = await request(app).get("/non-existent-path").expect(404)
+
+            expect(body.msg).toBe("Path not found.");
+        });
     });
     describe ("extra queries for /api/properties", () => {
         test("maximum price per night", async () => {
@@ -135,7 +141,7 @@ describe ("app", () => {
 
             expect(body.properties.length).toBe(5);
         });
-    })
+    });
     describe ("get request at /api/properties/:id/reviews", () => {
         test("responds with Status 200", async () => {
 
@@ -522,5 +528,148 @@ describe ("app", () => {
             expect(body.hasOwnProperty("created_at")).toEqual(true);
 
           });
-    })
+    });
+    describe ("patch a user at /api/users/:id", () => {
+        test("updates first name and returns updated user, responds with 200", async () => {
+
+            const id = 1;
+
+            const passedData = {first_name :'Katie'}
+
+            const updatedUser =  {
+                user_id: 1,
+                first_name: 'Katie',
+                surname: 'Johnson',
+                email: 'alice@example.com',
+                phone_number: '+44 7000 111111',
+                is_host: true,
+                avatar: 'https://example.com/images/alice.jpg',
+              }
+
+           const {body} =  await  request(app)
+                                            .patch(`/api/users/${id}`)
+                                            .send(passedData)
+                                            .expect(200);
+
+           expect(body.user).toEqual(updatedUser);
+          });
+        test("updates surname and returns updated user", async () => {
+
+            const id = 1;
+
+            const passedData = {surname :'Perry'}
+
+            const updatedUser =  {
+                user_id: 1,
+                first_name: 'Katie',
+                surname: 'Perry',
+                email: 'alice@example.com',
+                phone_number: '+44 7000 111111',
+                is_host: true,
+                avatar: 'https://example.com/images/alice.jpg',
+              }
+
+           const {body} =  await  request(app)
+                                            .patch(`/api/users/${id}`)
+                                            .send(passedData)
+                                            .expect(200);
+
+           expect(body.user).toEqual(updatedUser);
+          });
+        test("updates surname and returns updated user", async () => {
+
+            const id = 1;
+
+            const passedData = {email :'katie@example.com'}
+
+            const updatedUser =  {
+                user_id: 1,
+                first_name: 'Katie',
+                surname: 'Perry',
+                email: 'katie@example.com',
+                phone_number: '+44 7000 111111',
+                is_host: true,
+                avatar: 'https://example.com/images/alice.jpg',
+              }
+
+           const {body} =  await  request(app)
+                                            .patch(`/api/users/${id}`)
+                                            .send(passedData)
+                                            .expect(200);
+
+           expect(body.user).toEqual(updatedUser);
+          });
+        test("updates surname and returns updated user", async () => {
+
+            const id = 1;
+
+            const passedData = {phone_number :'+44 7000 222222'}
+
+            const updatedUser =  {
+                user_id: 1,
+                first_name: 'Katie',
+                surname: 'Perry',
+                email: 'katie@example.com',
+                phone_number: '+44 7000 222222',
+                is_host: true,
+                avatar: 'https://example.com/images/alice.jpg',
+              }
+
+           const {body} =  await  request(app)
+                                            .patch(`/api/users/${id}`)
+                                            .send(passedData)
+                                            .expect(200);
+
+           expect(body.user).toEqual(updatedUser);
+          });
+        test("updates avatar and returns updated user", async () => {
+
+            const id = 1;
+
+            const passedData = {avatar :'https://example.com/images/katie.jpg'}
+
+            const updatedUser =  {
+                user_id: 1,
+                first_name: 'Katie',
+                surname: 'Perry',
+                email: 'katie@example.com',
+                phone_number: '+44 7000 222222',
+                is_host: true,
+                avatar: 'https://example.com/images/katie.jpg',
+              }
+
+           const {body} =  await  request(app)
+                                            .patch(`/api/users/${id}`)
+                                            .send(passedData)
+                                            .expect(200);
+
+           expect(body.user).toEqual(updatedUser);
+          });
+        test("updates any combination of values and returns updated user", async () => {
+
+            const id = 1;
+
+            const passedData = {first_name: 'John',
+                                phone_number: '+44 7333 222222',
+                                avatar :'https://example.com/images/john.jpg'
+                            }
+
+            const updatedUser =  {
+                user_id: 1,
+                first_name: 'John',
+                surname: 'Perry',
+                email: 'katie@example.com',
+                phone_number: '+44 7333 222222',
+                is_host: true,
+                avatar: 'https://example.com/images/john.jpg',
+              }
+
+           const {body} =  await  request(app)
+                                            .patch(`/api/users/${id}`)
+                                            .send(passedData)
+                                            .expect(200);
+
+           expect(body.user).toEqual(updatedUser);
+          });
+    });
 })

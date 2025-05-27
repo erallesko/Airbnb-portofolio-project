@@ -34,8 +34,6 @@ exports.fetchReviews = async (id) => {
 
 exports.removeReview = async (id) => {
 
-
-
   let query = (`DELETE FROM reviews 
                   WHERE property_id = $1 RETURNING *`)
 
