@@ -7,9 +7,13 @@ exports.getUser = async (req, res, next) =>  {
 
     const rows = await fetchUser(id);
 
-    user = {user: rows};
-
-    res.status(200).send(user);
+    try{
+        user = {user: rows};
+        res.status(200).send(user);
+    }catch(error){
+        next(error)
+    }
+    
 };
 
 exports.patchUser = async (req, res, next) => {

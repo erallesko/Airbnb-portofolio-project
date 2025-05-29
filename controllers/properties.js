@@ -1,4 +1,4 @@
-const { fetchProperties, fetchProperty } = require("../models/properties");
+const { fetchProperties, fetchProperty, removeFavourite } = require("../models/properties");
 
 
 exports.getProperties = async (req, res, next) => { 
@@ -18,7 +18,23 @@ exports.getProperty = async (req, res, next) => {
 
     const {id} = req.params;
 
-    const  rows = await fetchProperty(id, user_id);
-
-    res.status(200).send({property: rows});
+    try{
+        const  rows = await fetchProperty(id, user_id);
+        res.status(200).send({property: rows})
+    }catch(error){
+        next(error);
+    }
 };
+
+exports.deleteFavourite = async (req, res, next) => {
+
+    const {id} = req.params;
+
+    try{
+        const rows = await removeFavourite(id);
+        res.status(204).send();
+    }catch(error){
+        next(error);
+    }
+    
+}

@@ -5,8 +5,9 @@ const {fetchReviews, removeReview, addReview} = require("../models/reviews")
 exports.getReviews = async (req, res, next) => {
 
     const {id} = req.params;
+    const propertyId = parseInt(id)
 
-    const {rows, average} = await fetchReviews(id);
+    const {rows, average} = await fetchReviews(propertyId);
 
     reviews = {reviews : rows, average_rating : average}
 
@@ -20,9 +21,14 @@ exports.deleteReview = async (req, res, next) => {
 
     const {id} = req.params;
  
-    const rows = await removeReview(id)
+    try{
+        const rows = await removeReview(id)
+        res.status(204).send();
+    }catch(error){
+        next(error);
+    }
+  
 
-    res.status(204).send({msg: "no body"});
 };
 
 
@@ -31,11 +37,14 @@ exports.postReview = async (req, res, next) => {
     const {id} = req.params;
     
     const propertyID = parseInt(id)
-    
+
     const newReviewData = req.body;
 
-    const rows = await addReview(propertyID, newReviewData);
-
-    
-    res.status(201).send(rows[0]);
+    try{
+        const rows = await addReview(propertyID, newReviewData);
+        res.status(201).send(rows[0]);
+    }catch(error){
+        next(error)
+    }
+   
 }

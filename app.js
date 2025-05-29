@@ -1,8 +1,9 @@
 const express = require("express");
-const {getProperties, getProperty} = require("./controllers/properties");
+const {getProperties, getProperty, deleteFavourite} = require("./controllers/properties");
 const {getReviews, deleteReview, postReview} = require("./controllers/reviews");
 const {getUser, patchUser} = require("./controllers/users");
-const {handlePathNotFound} = require("./controllers/errors")
+const {postFavourite} = require("./controllers/favourites");
+const {handlePathNotFound, handleDataNotFound, handleBadRequest, handleInvalidInput} = require("./controllers/errors")
 const app = express();
 
 app.use(express.json());
@@ -21,6 +22,16 @@ app.post("/api/properties/:id/reviews", postReview);
 
 app.patch("/api/users/:id", patchUser);
 
+app.delete("/api/properties/:id/favourite", deleteFavourite);
+
+app.post("/api/properties/:id/favourite", postFavourite);
+
 app.all("*invalid-path", handlePathNotFound );
+
+app.use(handleInvalidInput);
+
+app.use(handleDataNotFound);
+
+app.use(handleBadRequest);
 
 module.exports = app;
