@@ -3,7 +3,8 @@ const {getProperties, getProperty, deleteFavourite} = require("./controllers/pro
 const {getReviews, deleteReview, postReview} = require("./controllers/reviews");
 const {getUser, patchUser} = require("./controllers/users");
 const {postFavourite} = require("./controllers/favourites");
-const {handlePathNotFound, handleDataNotFound, handleBadRequest, handleInvalidInput} = require("./controllers/errors")
+const {handlePathNotFound, handleDataNotFound, handleBadRequest, handleInvalidInput} = require("./controllers/errors");
+const {getBookings} = require("./controllers/bookings");
 const app = express();
 
 app.use(express.json());
@@ -25,6 +26,12 @@ app.patch("/api/users/:id", patchUser);
 app.delete("/api/properties/:id/favourite", deleteFavourite);
 
 app.post("/api/properties/:id/favourite", postFavourite);
+
+app.get("/api/properties/:id/bookings", getBookings);
+
+
+
+
 
 app.all("*invalid-path", handlePathNotFound );
 

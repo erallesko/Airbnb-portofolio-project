@@ -3,13 +3,19 @@ const { fetchProperties, fetchProperty, removeFavourite } = require("../models/p
 
 exports.getProperties = async (req, res, next) => { 
 
-    const {maxprice, minprice, sort, order, host} = req.query
+    const {maxprice, minprice, sort, order, host, amenity} = req.query
 
-    const rows = await fetchProperties(maxprice, minprice, sort, order, host);
+    try{
+        const rows = await fetchProperties(maxprice, minprice, sort, order, host, amenity);
 
-    properties = {properties : rows}
-
-    res.status(200).send(properties);
+        properties = {properties : rows}
+    
+        res.status(200).send(properties);
+    }catch(error){
+        console.log(error)
+        next(error)
+    }
+    
 };
 
 exports.getProperty = async (req, res, next) => {

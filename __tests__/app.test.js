@@ -88,7 +88,7 @@ describe ("app", () => {
         test("Properties should come back ordered by most favourited to least by default", async () => {
            
             const {body} = await request(app).get("/api/properties");
-            
+
             expect(body.properties[0].property_name).toBe("Chic Studio Near the Beach")
             expect(body.properties[1].property_name).toBe("Cosy Loft in the Heart of the City")
 
@@ -123,7 +123,7 @@ describe ("app", () => {
 
             const properties = body.properties
 
-            expect(properties.length).toBe(4);
+            expect(properties.length).toBe(5);
         });
         test("minimum price per night", async () => {
 
@@ -153,7 +153,7 @@ describe ("app", () => {
 
             const propertyOne = body.properties[0]
 
-            expect(propertyOne.property_name).toBe("Quaint Cottage in the Hills");
+            expect(propertyOne.property_name).toBe("Bright and Airy Studio");
         });
         test("sort by specific host_id", async () => {
 
@@ -161,7 +161,7 @@ describe ("app", () => {
 
             const {body} = await  request(app).get(`/api/properties?host=${hostID}`);
 
-            expect(body.properties.length).toBe(4);
+            expect(body.properties.length).toBe(5);
         });
         test("returns 400 and message if maximum price per night is not an integer", async () => {
 
@@ -198,7 +198,7 @@ describe ("app", () => {
         });
         test("returns 400 and msg if host_id is not an integer", async () => {
 
-            const hostID = "Palmer Brown";
+            const hostID = "invalid-id";
 
             const {body} = await  request(app).get(`/api/properties?host=${hostID}`)
                                   .expect(400);
@@ -212,7 +212,32 @@ describe ("app", () => {
             const {body} = await  request(app).get(`/api/properties?host=${hostID}`)
                                   .expect(404);
 
-            expect(body.msg).toBe("Host not found.");
+            expect(body.msg).toBe("Invalid input.");
+        });
+        test("returns properties which have requested amenity", async () => {
+
+
+            const {body} = await  request(app).get(`/api/properties?amenity=TV`);
+
+            const properties = body.properties
+
+            expect(properties.length).toBe(6);
+        });
+        test("returns properties which have requested amenities", async () => {
+
+
+            const {body} = await  request(app).get(`/api/properties?amenity=WiFi&amenity=Kitchen`);
+
+            const properties = body.properties
+
+            expect(properties.length).toBe(3);
+        });
+        test("returns 404 and msg if amenity is not valid", async () => {
+
+
+            const {body} = await  request(app).get(`/api/properties?amenity=Sink`).expect(404);
+
+            expect(body.msg).toBe("Invalid input.");
         });
     });
     describe ("get request at /api/properties/:id/reviews", () => {
@@ -1131,7 +1156,7 @@ describe ("app", () => {
              expect(body.msg).toBe("Invalid input.")                 
         });
     });
-    describe.only ("post request at /api/properties/:id/favourite", () => {
+    describe ("post request at /api/properties/:id/favourite", () => {
         test("returns status 201", async () => {
 
             const id = 2;
@@ -1156,8 +1181,8 @@ describe ("app", () => {
                                              .send(userData);
             
             const {rows} = await db.query(`SELECT favourite_id FROM favourites`);
-            
-            expect(rows.length).toBe(21);
+
+            expect(rows.length).toBe(19);
         });
         test("returns message and favourite id number in a JSON", async () => {
 
@@ -1170,9 +1195,169 @@ describe ("app", () => {
             const {body} = await request(app).post(`/api/properties/${id}/favourite`)
                                              .send(userData);
             
-            
             expect(body.msg).toBe("Property favourited successfully.");
             expect(body.favourite_id).toBe(22);
         });
-    })
-})
+        test("returns 400 and msg if id is not a valid property", async () => {
+
+            const id = 5555;
+
+            const userData = {
+                "guest_id": 4
+            };
+
+            const {body} = await request(app).post(`/api/properties/${id}/favourite`)
+                                             .send(userData)
+                                             .expect(400);
+            
+            expect(body.msg).toBe("Invalid input.");
+        });
+        test("returns 400 and msg if id is not an integer", async () => {
+
+            const id = "invalid-id";
+
+            const userData = {
+                "guest_id": 4
+            };
+
+            const {body} = await request(app).post(`/api/properties/${id}/favourite`)
+                                             .send(userData)
+                                             .expect(400);
+            
+            expect(body.msg).toBe("Invalid input.");
+        });
+        test("returns 400 and msg if guest_id doesn't exist", async () => {
+
+            const id = 3;
+
+            const userData = {
+                "invalid_key": 4
+            };
+
+            const {body} = await request(app).post(`/api/properties/${id}/favourite`)
+                                             .send(userData)
+                                             .expect(400);
+            
+            expect(body.msg).toBe("Invalid input.");
+        });
+        test("returns 400 and msg if guest_id is not an integer", async () => {
+
+            const id = 3;
+
+            const userData = {
+                "guest_id": "invalid-id"
+            };
+
+            const {body} = await request(app).post(`/api/properties/${id}/favourite`)
+                                             .send(userData)
+                                             .expect(400);
+            
+            expect(body.msg).toBe("Invalid input.");
+        });
+        test("returns 201 and not affected if extra key exists", async () => {
+
+            const id = 3;
+
+            const userData = {
+                "guest_id": 3,
+                "guest_car": true
+            };
+
+            const {body} = await request(app).post(`/api/properties/${id}/favourite`)
+                                             .send(userData)
+                                             .expect(201);
+            
+        });
+    });
+    describe ("get request at /api/properties/:id/bookings", () => {
+        test("returns status 200", async () => {
+
+            const id = 2;
+
+            await request(app).get(`/api/properties/${id}/bookings`)
+                              .expect(200);
+        });
+        test("returns an array of bookings that have a booking_id value", async () => {
+
+            const id = 2;
+
+            const  {body} = await request(app).get(`/api/properties/${id}/bookings`)
+                              .expect(200);
+            
+            expect(body.bookings[0].hasOwnProperty("booking_id")).toBe(true);
+        });
+        test("returns an array of bookings that have a check_in_date value", async () => {
+
+            const id = 2;
+
+            const  {body} = await request(app).get(`/api/properties/${id}/bookings`)
+                              .expect(200);
+            
+            expect(body.bookings[0].hasOwnProperty("booking_id")).toBe(true);
+            expect(body.bookings[0].hasOwnProperty("check_in_date")).toBe(true);
+
+        });
+        test("returns an array of bookings that have a check_out_date value", async () => {
+            
+            const id = 2;
+
+            const  {body} = await request(app).get(`/api/properties/${id}/bookings`)
+                              .expect(200);
+            
+            expect(body.bookings[0].hasOwnProperty("booking_id")).toBe(true);
+            expect(body.bookings[0].hasOwnProperty("check_out_date")).toBe(true);
+
+        });
+        test("returns an array of bookings that have a created_at value", async () => {
+
+            const id = 2;
+
+            const  {body} = await request(app).get(`/api/properties/${id}/bookings`)
+                              .expect(200);
+            
+            expect(body.bookings[0].hasOwnProperty("booking_id")).toBe(true);
+            expect(body.bookings[0].hasOwnProperty("check_out_date")).toBe(true);
+            expect(body.bookings[0].hasOwnProperty("created_at")).toBe(true);
+
+        });
+        test("returns an extra key of property_id with the number in", async () => {
+
+            const id = 2;
+
+            const  {body} = await request(app).get(`/api/properties/${id}/bookings`)
+                              .expect(200);
+            
+            expect(body.property_id).toBe(id);
+
+        });
+        test("bookings are ordered from latest check_out_date to earliest", async () => {
+
+            const id = 1;
+
+            const  {body} = await request(app).get(`/api/properties/${id}/bookings`)
+                              .expect(200);
+
+
+            expect(body.bookings).toBeSortedBy("check_out_date", {descending: true});
+
+        });
+        test("returns status 400 and msg if id does not exist", async () => {
+
+            const id = 14444;
+
+            const  {body} = await request(app).get(`/api/properties/${id}/bookings`)
+                                              .expect(400);
+
+            expect(body.msg).toBe("Property not found.");
+        });
+        test("returns status 400 and msg if id is not an integer", async () => {
+
+            const id = "invalid-id";
+
+            const  {body} = await request(app).get(`/api/properties/${id}/bookings`)
+                                              .expect(400);
+
+            expect(body.msg).toBe("Invalid input.");
+        });
+    });
+});
