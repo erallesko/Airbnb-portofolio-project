@@ -4,7 +4,7 @@ const {getReviews, deleteReview, postReview} = require("./controllers/reviews");
 const {getUser, patchUser} = require("./controllers/users");
 const {postFavourite} = require("./controllers/favourites");
 const {handlePathNotFound, handleDataNotFound, handleBadRequest, handleInvalidInput} = require("./controllers/errors");
-const {getBookings} = require("./controllers/bookings");
+const {getBookings, deleteBooking, getUserBookings} = require("./controllers/bookings");
 const app = express();
 
 app.use(express.json());
@@ -17,7 +17,7 @@ app.get("/api/properties/:id", getProperty);
 
 app.get("/api/users/:id", getUser);
 
-app.delete("/api/properties/:id/reviews", deleteReview);
+app.delete("/api/reviews/:id", deleteReview);
 
 app.post("/api/properties/:id/reviews", postReview);
 
@@ -29,7 +29,9 @@ app.post("/api/properties/:id/favourite", postFavourite);
 
 app.get("/api/properties/:id/bookings", getBookings);
 
+app.delete("/api/bookings/:id", deleteBooking);
 
+app.get("/api/users/:id/bookings", getUserBookings);
 
 
 

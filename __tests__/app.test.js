@@ -520,7 +520,19 @@ describe ("app", () => {
             expect(property.hasOwnProperty("images")).toBe(true);
             expect(property.images.length).toBe(3);
 
-        });       
+        });   
+        test("returns an array with one property that has an amenities value ", async () => {
+
+            const id = 1;
+
+            const {body} = await  request(app).get(`/api/properties/${id}`);
+
+            const property = body.property[0];
+
+            expect(property.hasOwnProperty("amenities")).toBe(true);
+            expect(property.amenities).toEqual(["WiFi", "TV", "Kitchen"]);
+
+        });    
     });
     describe ("get request at /api/users/:id", () => {
         test("responds with Status 200", async () => {
@@ -639,29 +651,29 @@ describe ("app", () => {
             expect(body.msg).toBe("Invalid input.");
         });
     });
-    describe ("delete request at /api/properties/:id/reviews", () => {
+    describe ("delete request at /api/reviews/id", () => {
         test("responds with Status 204", async () => {
 
-            const id = 1;
+            const id = 4;
 
-            await  request(app).delete(`/api/properties/${id}/reviews`).expect(204);
-
+           const {body} = await  request(app).delete(`/api/reviews/${id}`)
+                               .expect(204);
           });
         test("deletes the reviews corresponding to the parametric endpoint property",async () => {
 
-          const id = 1;
+          const id = 2;
 
-          await  request(app).delete(`/api/properties/${id}/reviews`);
+          await  request(app).delete(`/api/reviews/${id}`);
 
-          const {body} = await  request(app).get(`/api/properties/${id}/reviews`)
+          const {body} = await  request(app).get(`/api/reviews/${id}`)
 
-            expect(body.msg).toBe("Review not found.");
+            expect(body.msg).toBe(undefined);
         });
         test("returns 404 and msg if id number is not accurate",async () => {
 
             const id = 11111;
   
-           const {body} = await  request(app).delete(`/api/properties/${id}/reviews`)
+           const {body} = await  request(app).delete(`/api/reviews/${id}`)
                                .expect(404);
    
               expect(body.msg).toBe("Review not found.");
@@ -670,7 +682,7 @@ describe ("app", () => {
 
             const id = "invalid-id";
   
-           const {body} = await  request(app).delete(`/api/properties/${id}/reviews`)
+           const {body} = await  request(app).delete(`/api/reviews/${id}`)
                                  .expect(400);
    
               expect(body.msg).toBe("Invalid input.");
@@ -1360,4 +1372,160 @@ describe ("app", () => {
             expect(body.msg).toBe("Invalid input.");
         });
     });
+    describe ("delete request at /api/bookings/:id", () => {
+        test("returns status 204 and no body", async () => {
+
+            const id = 2;
+
+            const {body} = await request(app).delete(`/api/bookings/${id}`)
+                                           .expect(204);
+                expect(body).toEqual({})                           
+        });
+        test("removes the requested booking", async () => {
+
+            const id = 1;
+
+            const {body} = await request(app).delete(`/api/bookings/${id}`)
+                                           .expect(204);
+
+            const {rows} = await db.query(`SELECT * FROM bookings 
+                                           WHERE booking_id = ${id} `);
+            expect(rows).toEqual([]);
+        });
+        test ("responds with status 404 and msg if id does not exist", async () => {
+
+            const id = 6666;
+
+            const {body} = await  request(app).delete(`/api/bookings/${id}`)
+                                  .expect(404);
+
+             expect(body.msg).toBe("Property not found.")                 
+        });
+        test ("responds with status 400 and msg if id is not valid", async () => {
+
+            const id = "invalid-id";
+
+            const {body} = await  request(app).delete(`/api/bookings/${id}`)
+                                  .expect(400);
+
+             expect(body.msg).toBe("Invalid input.")                 
+        });
+    });
+    describe ("get request at /api/users/:id/bookings", () => {
+        test("returns status 200", async () => {
+
+            const id = 2;
+
+            await request(app).get(`/api/users/${id}/bookings`)
+                              .expect(200);
+        });
+        test("returns an array of more than 0 elements", async () => {
+
+            const id = 2;
+
+           const {body} =  await request(app).get(`/api/users/${id}/bookings`);
+           
+           const bookings = body.bookings;
+
+           expect(bookings.length > 0).toBe(true);
+        });
+        test("returns an array of bookings that have a booking_id value", async () => {
+
+            const id = 2;
+
+           const {body} =  await request(app).get(`/api/users/${id}/bookings`);
+           
+           const booking = body.bookings[0];
+
+           expect(booking.hasOwnProperty("booking_id")).toBe(true);
+        });
+        test("returns an array of bookings that have a check_in_date value", async () => {
+
+            const id = 2;
+
+           const {body} =  await request(app).get(`/api/users/${id}/bookings`);
+           
+           const booking = body.bookings[0];
+
+           expect(booking.hasOwnProperty("check_in_date")).toBe(true);
+        });
+        test("returns an array of bookings that have a check_out_date value", async () => {
+
+            const id = 2;
+
+           const {body} =  await request(app).get(`/api/users/${id}/bookings`);
+           
+           const booking = body.bookings[0];
+
+           expect(booking.hasOwnProperty("check_out_date")).toBe(true);
+        });
+        test("returns an array of bookings that have a property id value", async () => {
+
+            const id = 2;
+
+           const {body} =  await request(app).get(`/api/users/${id}/bookings`);
+           
+           const booking = body.bookings[0];
+
+           expect(booking.hasOwnProperty("property_id")).toBe(true);
+        });
+        test("returns an array of bookings that have a property name value", async () => {
+
+            const id = 2;
+
+           const {body} =  await request(app).get(`/api/users/${id}/bookings`);
+           
+           const booking = body.bookings[0];
+
+           expect(booking.hasOwnProperty("property_name")).toBe(true);
+        });
+        test("returns an array of bookings that have a host value", async () => {
+
+            const id = 2;
+
+           const {body} =  await request(app).get(`/api/users/${id}/bookings`);
+           
+           const booking = body.bookings[0];
+
+           expect(booking.hasOwnProperty("host")).toBe(true);
+        });
+        test("returns an array of bookings that has an image value", async () => {
+
+            const id = 2;
+
+           const {body} =  await request(app).get(`/api/users/${id}/bookings`);
+           
+           const booking = body.bookings[0];
+
+           expect(booking.hasOwnProperty("image")).toBe(true);
+        });
+        test("bookings come back sorted in chronological order", async () => {
+
+            const id = 2;
+
+           const {body} =  await request(app).get(`/api/users/${id}/bookings`);
+           
+           const bookings = body.bookings
+
+           expect(bookings).toBeSortedBy('check_in_date');
+        });
+        test("returns 400 and msg if id is not an integer", async () => {
+
+            const id = "invalid-input";
+
+           const {body} =  await request(app).get(`/api/users/${id}/bookings`)
+                                             .expect(400);
+                                             
+           expect(body.msg).toBe("Invalid input.");
+        });
+        test("returns 404 and msg if id is not valid user", async () => {
+
+            const id = 5555;
+
+           const {body} =  await request(app).get(`/api/users/${id}/bookings`)
+                                             .expect(404);
+                                             
+           expect(body.msg).toBe("User not found.");
+        });
+    })
 });

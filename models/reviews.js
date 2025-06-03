@@ -36,7 +36,7 @@ exports.fetchReviews = async (propertyId) => {
 exports.removeReview = async (id) => {
 
   let query = (`DELETE FROM reviews 
-                  WHERE property_id = $1 RETURNING *`)
+                  WHERE review_id = $1 RETURNING *`)
 
 
   const {rows} = await db.query(query, [id])

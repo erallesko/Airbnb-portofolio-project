@@ -120,14 +120,14 @@ exports.fetchProperty = async (id, user_id) => {
 
     let query = `SELECT properties.property_id, name AS property_name, location, price_per_night, description,
                  users.first_name ||' '|| users.surname AS host, avatar AS host_avatar, 
-                 COUNT (favourites.favourite_id) AS favourite_count, JSON_AGG(image_url) AS images
+                 COUNT (favourites.favourite_id) AS favourite_count, JSON_AGG(image_url) AS images,
+                 (SELECT JSON_AGG(amenity_slag) from properties_amenities where property_id = ${id}) AS amenities
                   ${optionalQuery} 
                  FROM properties
                  JOIN users ON users.user_id = properties.host_id
                  JOIN favourites ON properties.property_id = favourites.property_id
                  JOIN images ON images.property_id = properties.property_id
                 `
-
    
     query += `WHERE properties.property_id = $${values.length + 1}
               GROUP BY properties.property_id, host, avatar, guest_id`

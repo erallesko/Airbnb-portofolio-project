@@ -20,7 +20,7 @@ exports.getReviews = async (req, res, next) => {
 exports.deleteReview = async (req, res, next) => {
 
     const {id} = req.params;
- 
+
     try{
         const rows = await removeReview(id)
         res.status(204).send();
@@ -28,7 +28,6 @@ exports.deleteReview = async (req, res, next) => {
         next(error);
     }
   
-
 };
 
 
