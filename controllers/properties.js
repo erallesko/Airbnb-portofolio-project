@@ -39,10 +39,13 @@ exports.getProperty = async (req, res, next) => {
 
 exports.deleteFavourite = async (req, res, next) => {
 
-    const {id} = req.params;
+    const {id1, id2} = req.params;
+    const  propertyId = parseInt(id1);
+    const userId = parseInt(id2);
+
 
     try{
-        const rows = await removeFavourite(id);
+        await removeFavourite(propertyId, userId);
         res.status(204).send();
     }catch(error){
         next(error);

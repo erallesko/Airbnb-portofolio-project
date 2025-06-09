@@ -5,6 +5,7 @@ const {getUser, patchUser} = require("./controllers/users");
 const {postFavourite} = require("./controllers/favourites");
 const {handlePathNotFound, handleDataNotFound, handleBadRequest, handleInvalidInput} = require("./controllers/errors");
 const {getBookings, deleteBooking, getUserBookings} = require("./controllers/bookings");
+const {getAmenities} = require("./controllers/amenities");
 const app = express();
 
 app.use(express.json());
@@ -23,7 +24,7 @@ app.post("/api/properties/:id/reviews", postReview);
 
 app.patch("/api/users/:id", patchUser);
 
-app.delete("/api/properties/:id/favourite", deleteFavourite);
+app.delete("/api/properties/:id1/users/:id2/favourite", deleteFavourite);
 
 app.post("/api/properties/:id/favourite", postFavourite);
 
@@ -32,6 +33,8 @@ app.get("/api/properties/:id/bookings", getBookings);
 app.delete("/api/bookings/:id", deleteBooking);
 
 app.get("/api/users/:id/bookings", getUserBookings);
+
+app.get("/api/amenities", getAmenities)
 
 
 

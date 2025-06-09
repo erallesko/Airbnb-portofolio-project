@@ -145,16 +145,17 @@ exports.fetchProperty = async (id, user_id) => {
 
 
 
-exports.removeFavourite = async (id) => {
+exports.removeFavourite = async (propertId, userId) => {
 
+    
     query = `DELETE FROM favourites
-             WHERE property_id = $1 RETURNING *`
+             WHERE property_id = $1
+             AND guest_id = $2 RETURNING *`
 
-    const {rows} = await  db.query(query, [id]);
-
+    const {rows} = await  db.query(query, [propertId, userId]);
 
     if (!rows[0]){
-        return Promise.reject({status:404, msg:"Property not found."});
+        return Promise.reject({status:404, msg: "Invalid input."})
     };
 
     return rows;

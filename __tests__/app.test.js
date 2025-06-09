@@ -1,3 +1,5 @@
+process.env.NODE_ENV = "test"
+
 const request = require("supertest");
 const app = require("../app");
 const db = require("../db/connection");
@@ -1141,29 +1143,52 @@ describe ("app", () => {
             expect(body.msg).toBe("Bad request.");
           });
     });
-    describe ("delete request at /api/properties/:id/favourite", () => {
+    describe ("delete request at /api/properties/:id1/users/:id2/favourite", () => {
         test ("responds with status 204 and returns no body", async () => {
 
-            const id = 2;
+            const propertyId = 3;
+            const userId = 4;
 
-            await  request(app).delete(`/api/properties/${id}/favourite`).expect(204);
-                              
+            await  request(app).delete(`/api/properties/${propertyId}/users/${userId}/favourite`).expect(204);
+                        
         });
-        test ("responds with status 404 and msg if id does not exist", async () => {
+        test ("responds with status 404 and msg if property id does not exist", async () => {
 
-            const id = 6666;
+            const propertyId = 55555;
+            const userId = 4;
 
-            const {body} = await  request(app).delete(`/api/properties/${id}/favourite`)
-                                  .expect(404);
+           const {body} = await  request(app).delete(`/api/properties/${propertyId}/users/${userId}/favourite`).expect(404);
+                        
 
-             expect(body.msg).toBe("Property not found.")                 
+             expect(body.msg).toBe("Invalid input.")                 
         });
-        test ("responds with status 400 and msg if id is not valid", async () => {
+        test ("responds with status 404 and msg if user id does not exist", async () => {
 
-            const id = "invalid-id";
+            const propertyId = 1;
+            const userId = 55555;
 
-            const {body} = await  request(app).delete(`/api/properties/${id}/favourite`)
-                                  .expect(400);
+           const {body} = await  request(app).delete(`/api/properties/${propertyId}/users/${userId}/favourite`).expect(404);
+                        
+
+             expect(body.msg).toBe("Invalid input.")                 
+        });
+        test ("responds with status 404 and msg if property id is not an integer", async () => {
+
+            const propertyId = "invalid-id";
+            const userId = 4;
+
+           const {body} = await  request(app).delete(`/api/properties/${propertyId}/users/${userId}/favourite`).expect(400);
+                        
+
+             expect(body.msg).toBe("Invalid input.")                 
+        });
+        test ("responds with status 404 and msg if user id is not an integer", async () => {
+
+            const propertyId = 1;
+            const userId = "invalid-id";
+
+           const {body} = await  request(app).delete(`/api/properties/${propertyId}/users/${userId}/favourite`).expect(400);
+                        
 
              expect(body.msg).toBe("Invalid input.")                 
         });
@@ -1194,7 +1219,7 @@ describe ("app", () => {
             
             const {rows} = await db.query(`SELECT favourite_id FROM favourites`);
 
-            expect(rows.length).toBe(19);
+            expect(rows.length).toBe(15);
         });
         test("returns message and favourite id number in a JSON", async () => {
 
@@ -1527,5 +1552,19 @@ describe ("app", () => {
                                              
            expect(body.msg).toBe("User not found.");
         });
-    })
+    });
+    describe ("get request at /api/amenities", () => {
+        test("responds with status 200", async () => {
+
+            await request(app).get("/api/amenities").expect(200);
+        });
+        test("returns an array of amenities with more than 0 elements", async () => {
+
+            const {body} = await request(app).get("/api/amenities");
+
+            expect(Array.isArray(body.amenities)).toBe(true);
+            expect(body.amenities.length > 0).toBe(true);
+
+        });
+    });
 });

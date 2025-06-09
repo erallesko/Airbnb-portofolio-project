@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "setup-dbs": "psql -f ./db/setup.sql",
     "test": "jest",
-    "seed": "node ./db/seed-run.js",
+    "seed-dev": "node ./db/seed-run.js",
+    "seed-prod": "NODE_ENV=production node ./db/seed-run.js",
     "test app": "jest app"
   },
   "repository": {
