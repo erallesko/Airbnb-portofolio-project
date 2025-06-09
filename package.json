@@ -2,13 +2,14 @@
   "name": "airbnb-portofolio-project",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "listen.js",
   "scripts": {
     "setup-dbs": "psql -f ./db/setup.sql",
     "test": "jest",
     "seed-dev": "node ./db/seed-run.js",
     "seed-prod": "NODE_ENV=production node ./db/seed-run.js",
-    "test app": "jest app"
+    "test app": "jest app",
+    "start": "node listen.js"
   },
   "repository": {
     "type": "git",
