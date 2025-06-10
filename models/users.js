@@ -1,4 +1,3 @@
-const { use } = require("../app");
 const db = require("../db/connection");
 
 exports.fetchUser = async (id) => {
