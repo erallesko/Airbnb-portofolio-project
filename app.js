@@ -34,7 +34,9 @@ app.delete("/api/bookings/:id", deleteBooking);
 
 app.get("/api/users/:id/bookings", getUserBookings);
 
-app.get("/api/amenities", getAmenities)
+app.get("/api/amenities", getAmenities);
+
+app.use("/", express.static('public'));
 
 
 
