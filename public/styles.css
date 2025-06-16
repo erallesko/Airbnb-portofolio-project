@@ -11,6 +11,15 @@ header {
     border: gray solid 2px;
 }
 
+.title {
+    position: relative;
+    margin-right: 100px;
+    background-color: aqua;
+    font-size: 50;
+    text-wrap: wrap;
+}
+
+
 img {
     border-radius: 50%;
     max-width: 600px;
@@ -26,12 +35,18 @@ img {
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     gap: 15px;
     padding: 50px;
-
 }
 
 .link {
+    background-color: white;
+    color: black;
     border: gray solid 2px;
+    box-shadow: 0px 0px 0px;
+    transition: 0.5sec;
 }
 
+.link:hover {
+    box-shadow: 5px 5px 5px rgb(145, 10, 73);
+}
 
 
