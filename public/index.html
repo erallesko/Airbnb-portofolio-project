@@ -15,24 +15,228 @@
     
     <div class="links">
        
-            <div class="link"><a href="https://airbnb-portofolio-project.onrender.com/api/properties" >/api/properties</a></div>
-            <div class="link"><a href="https://airbnb-portofolio-project.onrender.com/api/properties/">/api/properties/:id/reviews</a></div>
-            <div class="link"><a>/api/properties/:id</a></div>
+            <div class="link">
+                <p> GET /api/properties</p> 
+                <p>Returns an array of properties objects</p>
+
+                <pre class="jsonified"><code class="objects">
+                    {
+                        "properties": [
+                          {
+                            "property_id": &lt;id&gt;,
+                            "property_name": &lt;name&gt;,
+                            "location": &lt;location&gt;,
+                            "price_per_night": &lt;price&gt;,
+                            "host": &lt;host name&gt;,
+                            "image": &lt;img_url&gt;
+                          },
+                          {
+                            "property_id": &lt;id&gt;,
+                            "property_name": &lt;name&gt;,
+                            "location": &lt;location&gt;,
+                            "price_per_night": &lt;price&gt;,
+                            "host": &lt;host name&gt;,
+                            "image": &lt;img_url&gt;
+                          }
+                    }
+                </code></pre>
+                <p class="mid-page">Optional queries </p>
+
+                <ul class="query-list">
+                    <li><code class="objects">?maxprice=&lt;max cost per night&gt;</code></li>
+                    <li><code class="objects">?minprice=&lt;min cost per night&gt;</code></li>
+                    <li><code class="objects">?sort=&lt;cost_per_night | popularity&gt;</code></li>
+                    <li><code class="objects">?order=&lt;ascending | descending&gt;</code></li>
+                    <li><code class="objects">?host=&lt;id&gt;</code></li>
+                    <li><code class="objects">?amenity=&lt;amenity_slug&gt;</code></li>
+
+                </ul>
+
+                <P class="bottom-page">Try me : <a href="https://airbnb-portofolio-project.onrender.com/api/properties" >/api/properties</a>
+                </P>
+                <P class="bottom-page">Try me : <a href="https://airbnb-portofolio-project.onrender.com/api/properties?maxprice=100" >/api/properties?maxprice=100</a>
+                </P>
+            </div>
+
+
+            <div class="link">
+                <p>GET /api/properties/:id/reviews </p>
+                <p>Returns an array of reviews objects</p>
+
+                <pre class="jsonified"><code class="objects">
+                    {
+                        "reviews": [
+                          {
+                            "review_id": &lt;id&gt;,
+                            "comment": &lt;name&gt;,
+                            "rating": &lt;location&gt;,
+                            "created_at": &lt;date&gt;,
+                            "guest": &lt;guest name&gt;,
+                            "guest_avatar" &lt;img_url&gt;
+                          },
+                          ...
+                        ],
+                        "average_rating": &lt;avg of ratings&gt;
+                      }
+                </code></pre>
+
+                <p class="bottom-page">Try me : <a href="https://airbnb-portofolio-project.onrender.com/api/properties/2/reviews">/api/properties/:id/reviews</a></p>
+                
+            </div>
+            
+            
+            <div class="link">
+                <p>GET /api/properties/:id </p>
+                <p>Returns a single property object</p>
+
+                <pre class="jsonified"><code class="objects">
+                    {
+                        "property":  {
+                            "property_id": &lt;id&gt;,
+                            "property_name": &lt;name&gt;,
+                            "location": &lt;location&gt;,
+                            "price_per_night": &lt;price&gt;,
+                            "description": &lt;description&gt;,
+                            "host": &lt;host name&gt;,
+                            "host_avatar" &lt;image_url&gt;,
+                            "favourite_count": &lt;count&gt;,
+                            "image": &lt;img_url&gt;,
+                            "amenities": &lt;amenities array&gt;
+                      }
+                    }
+                </code></pre>
+                
+                <p class="mid-page">Optional query: <code class="objects">?user_id=&lt;id&gt;</code> returns if id has favourited the property or not</p>
+
+                <pre class="jsonified"><code class="objects">
+                    {
+                        "property":   {
+                         // regular fields...,
+                         favourited: &lt;true | false&gt;
+                        }
+                      }
+                </code></pre>
+
+                <p class="bottom-page">Try me : <a href="https://airbnb-portofolio-project.onrender.com/api/properties/1"> /api/properties/1</a></p>
+                <p class="bottom-page">Try me : <a href="https://airbnb-portofolio-project.onrender.com/api/properties/1?user_id=1"> /api/properties/1?user_id=1</a></p>
+
+            </div>
        
+
             <div class="link"><a>/api/properties/:id1/users/:id2/favourite</a></div>
             <div class="link"><a>/api/properties/:id/favourite</a></div>
-            <div class="link"><a>/api/properties/:id/bookings</a></div>
+
+
+            <div class="link">
+                
+                <p>GET /api/properties/:id/bookings </p>
+                <p>Returns an array of booking objects</p>
+
+                <pre class="jsonified"><code class="objects">
+                    {
+                        "bookings": [
+                          {
+                            "booking_id": &lt;id&gt;,
+                            "check_in_date": &lt;date&gt;,
+                            "check_out_date": &lt;date&gt;,
+                            "created_at": &lt;date&gt;
+                          },
+                          ...
+                        ]
+                        "property_id": &lt;id&gt;
+                      }
+                </code></pre>
+                            
+                <p class="bottom-page">Try me : <a href="https://airbnb-portofolio-project.onrender.com/api/properties/2/bookings">/api/properties/2/bookings</a> </p>
+            
+            </div>
     
-            <div class="link"><a>/api/users/:id</a></div>
+            <div class="link">
+                
+                <p>GET /api/users/:id </p>
+                <p>Returns a single user object</p>
+
+                <pre class="jsonified"><code class="objects">
+                    {
+                        "user":  {
+                            "user_id": &lt;id&gt;,
+                            "first_name": &lt;name&gt;,
+                            "surname": &lt;name&gt;,
+                            "email": &lt;email&gt;,
+                            "phone_number": &lt;phone number&gt;,
+                            "avatar": &lt;image url&gt;,
+                            "created_at": &lt;data&gt;
+                            }
+                      }
+                </code></pre>
+                
+                <p class="bottom-page">Try me : <a href="https://airbnb-portofolio-project.onrender.com/api/users/2">/api/users/2</a></p>
+                
+            </div>
+
+
             <div class="link"><a>/api/reviews/:id</a></div>
-            <div class="link"><a>/api/properties/:id/reviews</a></div>
+
+
+            <div class="link">
+
+                <p>POST /api/properties/:id/reviews </p>
+                <p>Inserts a new row into the reviews table</p>
+                <p>Expects the following payload as input : </p>
+
+
+                <pre class="jsonified"><code class="objects">
+                    {
+                        "guest_id": &lt;id&gt;,
+                        "rating": &lt;rating&gt;,
+                        "comment": &lt;comment&gt;
+                    }
+                </code></pre>
+
+                <p >Responds with the following : </p>
+
+                <pre class="jsonified"><code class="objects">
+                    {
+                        "review_id": &lt;id&gt;,
+                        "property_id": &lt;id&gt;,
+                        "guest_id": &lt;id&gt;,
+                        "rating": &lt;rating&gt;,
+                        "comment": &lt;comment&gt;,
+                        "created_at": &lt;date&gt;
+                    }
+                </code></pre>
+                            
+            </div>
     
             <div class="link"><a>/api/bookings/:id</a></div> 
             <div class="link"><a>/api/users/:id/bookings</a></div>
             <div class="link" id="item"><a>/api/amenities</a></div>
        
             <div></div>
-            <div class="link" ><a>/api/users/:id</a></div>
+
+            <div class="link" >
+
+                <p>GET /api/users/:id </p>
+                <p>Returns a user object</p>
+
+                <pre class="jsonified"><code class="objects">
+                    {
+                        "user":  {
+                            "user_id": = &lt;id&gt;,
+                            "first_name": &lt;name&gt;,
+                            "surname": &lt;name&gt;,
+                            "email": &lt;email&gt;,
+                            "phone_number": &lt;phone number&gt;,
+                            "avatar": &lt;image url&gt;
+                            "created_at": &lt;data&gt;
+                            }
+                      }
+                </code></pre>
+
+
+                <p class="bottom-page">Try me : <a href="https://airbnb-portofolio-project.onrender.com/api/users/2">/api/users/2</a> </p>
+            </div>
+            
             <div></div>
     </div>
     

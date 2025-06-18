@@ -20,7 +20,7 @@ header {
 }
 
 
-img {
+header img {
     border-radius: 50%;
     max-width: 600px;
     max-height: 600px;
@@ -49,4 +49,20 @@ img {
     box-shadow: 5px 5px 5px rgb(145, 10, 73);
 }
 
+.jsonified {
+    position: relative;
+    right: 100px;
+    text-align: start;
+}
 
+.objects {
+    font-size: 0.85rem;
+}
+
+.query-list {
+    text-align: start;
+}
+
+.bottom-page, .mid-page {
+    text-align: start;
+}
