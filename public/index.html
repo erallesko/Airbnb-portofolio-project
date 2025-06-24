@@ -16,8 +16,8 @@
     <div class="links">
        
             <div class="link">
-                <p> GET /api/properties</p> 
-                <p>Returns an array of properties objects</p>
+                <h3> GET /api/properties</h3> 
+                <p>Returns an array of properties </p>
 
                 <pre class="jsonified"><code class="objects">
                     {
@@ -60,8 +60,8 @@
 
 
             <div class="link">
-                <p>GET /api/properties/:id/reviews </p>
-                <p>Returns an array of reviews objects</p>
+                <h3>GET /api/properties/:id/reviews </h3>
+                <p>Returns an array of reviews </p>
 
                 <pre class="jsonified"><code class="objects">
                     {
@@ -86,8 +86,8 @@
             
             
             <div class="link">
-                <p>GET /api/properties/:id </p>
-                <p>Returns a single property object</p>
+                <h3>GET /api/properties/:id </h3>
+                <p>Returns a single property </p>
 
                 <pre class="jsonified"><code class="objects">
                     {
@@ -106,7 +106,8 @@
                     }
                 </code></pre>
                 
-                <p class="mid-page">Optional query: <code class="objects">?user_id=&lt;id&gt;</code> returns if id has favourited the property or not</p>
+                <p class="mid-page">Optional query: <code class="objects">?user_id=&lt;id&gt;</code> </p>
+                <p>Returns if id has favourited the property or not</p>
 
                 <pre class="jsonified"><code class="objects">
                     {
@@ -123,14 +124,44 @@
             </div>
        
 
-            <div class="link"><a>/api/properties/:id1/users/:id2/favourite</a></div>
-            <div class="link"><a>/api/properties/:id/favourite</a></div>
+            <div class="link">
+
+                <h3>DELETE /api/properties/:id/users/:id/favourite</h3>
+
+                <p>Removes the appropriate favourite data from the database</p>
+
+                <p>Returns 'no body'</p>
+                       
+            </div>
+
+            <div class="link">
+                
+                <h3>POST /api/properties/:id/favourite </h3>
+                <p>Adds a favourite property to the database </p>
+                <p>Exprects the following payload as input:</p>
+
+                <pre class="jsonified"><code class="objects">
+                    {
+                        "guest_id": &lt;id&gt;
+                    }
+                </code></pre>
+
+                <p class="mid-page">Responds with the following</p>
+
+                <pre class="jsonified"><code class="objects">
+                    {
+                        "msg": "Property favourited successfully.",
+                        "favorite_id": &lt;id&gt;
+                    }
+                </code></pre>
+            
+            </div>
 
 
             <div class="link">
                 
-                <p>GET /api/properties/:id/bookings </p>
-                <p>Returns an array of booking objects</p>
+                <h3>GET /api/properties/:id/bookings </h3>
+                <p>Returns an array of bookings for the property</p>
 
                 <pre class="jsonified"><code class="objects">
                     {
@@ -153,8 +184,8 @@
     
             <div class="link">
                 
-                <p>GET /api/users/:id </p>
-                <p>Returns a single user object</p>
+                <h3>GET /api/users/:id </h3>
+                <p>Returns a single user</p>
 
                 <pre class="jsonified"><code class="objects">
                     {
@@ -175,13 +206,21 @@
             </div>
 
 
-            <div class="link"><a>/api/reviews/:id</a></div>
+            <div class="link">
+                
+                <h3>DELETE /api/reviews/:id</h3>
+
+                <p>Removes the appropriate review from the database</p>
+
+                <p>returns 'no body'</p>
+            
+            </div>
 
 
             <div class="link">
 
-                <p>POST /api/properties/:id/reviews </p>
-                <p>Inserts a new row into the reviews table</p>
+                <h3>POST /api/properties/:id/reviews </h3>
+                <p>Inserts a new review into the database</p>
                 <p>Expects the following payload as input : </p>
 
 
@@ -208,33 +247,97 @@
                             
             </div>
     
-            <div class="link"><a>/api/bookings/:id</a></div> 
-            <div class="link"><a>/api/users/:id/bookings</a></div>
-            <div class="link" id="item"><a>/api/amenities</a></div>
+            <div class="link">
+                
+                <h3>DELETE /api/bookings/:id</h3>
+
+                <p>Removes the appropriate booking from the database</p>
+
+                <p>returns 'no body'</p>
+           
+            </div>
+
+            <div class="link">
+                
+                <h3>GET /api/users/:id/bookings </h3>
+                <p>Returns an array of bookings for the user</p>
+
+                <pre class="jsonified"><code class="objects">
+                    {
+                        "bookings": [
+                          {
+                            "booking_id": &lt;id&gt;,
+                            "check_in_date": &lt;date&gt;,
+                            "check_out_date": &lt;date&gt;,
+                            "property_id": &lt;id&gt;,
+                            "property_name": &lt;name of property&gt;,
+                            "host": &lt;name of host&gt;,
+                            "image": &lt;first image of property&gt;
+                          },
+                          ...
+                        ]
+                      }
+                </code></pre>
+
+                <p class="bottom-page">Try me : <a href="https://airbnb-portofolio-project.onrender.com/api/users/2/bookings">/api/users/2/bookings</a> </p>
+
+                
+            
+            </div>
+
+            <div class="link" id="item">
+
+                <h3>GET /api/amenities </h3>
+                <p>Returns an array of all the available amenities</p>
+                
+                <pre class="jsonified"><code class="objects">
+                    {
+                        "amenities": [
+                            { amenity_slug: <slug>
+                            },
+                            ...
+                          ]
+                        }
+                </code></pre>
+
+                <p class="bottom-page">Try me : <a href="https://airbnb-portofolio-project.onrender.com/api/amenities">/api/amenities</a><p/>
+
+            </div>
        
             <div></div>
 
             <div class="link" >
 
-                <p>GET /api/users/:id </p>
-                <p>Returns a user object</p>
+                <h3>PATCH /api/users/:id </h3>
+                <p>Updates the appropriate user </p>
+                <p>Expects the following payload as input :</p>
+
+                <pre class="jsonified"><code class="objects">
+                    {
+                        "first_name": &lt;name&gt;,
+                        "surname": &lt;name&gt;,
+                        "email": &lt;email&gt;,
+                        "phone": &lt;number&gt;,
+                        "avatar": &lt;image_url&gt;
+                    }
+                </code></pre>
+
+                <p>Responds with the following : </p>
 
                 <pre class="jsonified"><code class="objects">
                     {
                         "user":  {
-                            "user_id": = &lt;id&gt;,
+                            "user_id": &lt;id&gt;,
                             "first_name": &lt;name&gt;,
                             "surname": &lt;name&gt;,
                             "email": &lt;email&gt;,
                             "phone_number": &lt;phone number&gt;,
-                            "avatar": &lt;image url&gt;
+                            "avatar": &lt;image url&gt;,
                             "created_at": &lt;data&gt;
                             }
                       }
                 </code></pre>
 
-
-                <p class="bottom-page">Try me : <a href="https://airbnb-portofolio-project.onrender.com/api/users/2">/api/users/2</a> </p>
             </div>
             
             <div></div>
