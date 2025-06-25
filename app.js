@@ -7,6 +7,9 @@ const {handlePathNotFound, handleDataNotFound, handleBadRequest, handleInvalidIn
 const {getBookings, deleteBooking, getUserBookings} = require("./controllers/bookings");
 const {getAmenities} = require("./controllers/amenities");
 const app = express();
+const cors = require('cors');
+
+app.use(cors());
 
 app.use(express.json());
 
